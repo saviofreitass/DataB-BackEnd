@@ -8,5 +8,4 @@ class DataChequeApplication
 
 fun main(args: Array<String>) {
 	runApplication<DataChequeApplication>(*args)
-	print("Alou");
 }
