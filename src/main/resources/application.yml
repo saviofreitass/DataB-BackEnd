@@ -1,4 +1,8 @@
 spring:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    schemas: data_cheque
   application:
     name: data_cheque
   main:
