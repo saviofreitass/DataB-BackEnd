@@ -1,4 +1,4 @@
-CREATE TABLE funcionario (
+CREATE TABLE funcionarios (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     usuario_id UUID NOT NULL,
     empregador_id UUID NOT NULL,
