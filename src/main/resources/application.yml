@@ -4,7 +4,7 @@ spring:
     baseline-on-migrate: true
     schemas: data_cheque
   application:
-    name: arquivo_municipal
+    name: data_cheque
   main:
     web-application-type: servlet
   web:
@@ -14,7 +14,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     name: data_cheque
     username: postgres
-    password: 123456
+    password: 12345
     url: jdbc:postgresql://localhost:5432/data_cheque
     hikari:
       schema: data_cheque
