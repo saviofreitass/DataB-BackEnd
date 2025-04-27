@@ -7,8 +7,6 @@ class Empregador (
     val nome: String,
     val cnpj: String,
     val cpf: String,
-    val email: String,
-    val senha: String,
     val contadorUuid: UUID,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val criadoEm: LocalDateTime = LocalDateTime.now(),

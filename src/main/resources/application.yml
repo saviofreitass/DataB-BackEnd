@@ -14,7 +14,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     name: data_cheque
     username: postgres
-    password: 12345
+    password: 123456
     url: jdbc:postgresql://localhost:5432/data_cheque
     hikari:
       schema: data_cheque
