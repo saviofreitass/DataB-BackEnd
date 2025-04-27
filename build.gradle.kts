@@ -29,6 +29,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation("org.flywaydb:flyway-core:9.22.3")
 }
 
 kotlin {
@@ -44,7 +45,7 @@ tasks.withType<Test> {
 flyway{
 	url = "jdbc:postgresql://localhost:5432/data_cheque"
 	user = "postgres"
-	password = "123456"
+	password = "12345"
 	schemas = arrayOf("data_cheque")
 }
 

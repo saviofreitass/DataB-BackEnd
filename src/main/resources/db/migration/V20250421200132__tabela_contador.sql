@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS data_cheque.contador (
+    id UUID PRIMARY KEY,
+    crc VARCHAR(12) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status BOOLEAN
+);
