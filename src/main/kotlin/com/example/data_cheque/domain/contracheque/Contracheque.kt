@@ -1,4 +1,4 @@
-package com.example.data_cheque.domain
+package com.example.data_cheque.domain.contracheque
 
 import kotlinx.datetime.Instant
 import java.time.LocalDate
@@ -24,3 +24,20 @@ data class Contracheque (
     val atualizadoEm: Instant?,
     val usuarioAtualizacao: String?,
     )
+
+//dataPagamento
+//dataRefInicio
+//dataRefFim
+//salarioBase
+//horaExtra
+//adicionalNoturno
+//comissoes
+//beneficios
+//inss
+//irrf
+//fgts
+//outrosDescontos
+//criadoEm
+//usuarioCriacao
+//atualizadoEm
+//usuarioAtualizacao

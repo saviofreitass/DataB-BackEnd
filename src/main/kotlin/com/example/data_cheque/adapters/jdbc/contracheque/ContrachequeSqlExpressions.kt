@@ -26,13 +26,14 @@ object ContrachequeSqlExpressions {
         """
         SELECT ${campos()}
         from contracheque
+        WHERE func_id = :func_id
         """.trimIndent()
 
     fun sqlSelectById() =
         """
         SELECT ${campos()}
         from contracheque
-        WHERE id = :id
+        WHERE func_id = :func_id AND id = :id
         """.trimIndent()
 
     fun sqlInsertContracheque() =
