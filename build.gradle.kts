@@ -24,14 +24,14 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.flywaydb:flyway-core")
+	implementation("org.flywaydb:flyway-core:9.22.3")
 	implementation("io.github.microutils:kotlin-logging:2.0.10")
+	implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-
 }
 
 kotlin {
@@ -47,7 +47,7 @@ tasks.withType<Test> {
 flyway{
 	url = "jdbc:postgresql://localhost:5432/data_cheque"
 	user = "postgres"
-	password = "123456"
+	password = "566031"
 	schemas = arrayOf("data_cheque")
 }
 

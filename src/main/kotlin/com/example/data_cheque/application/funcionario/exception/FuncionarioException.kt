@@ -1,0 +1,11 @@
+package com.example.data_cheque.application.funcionario.exception
+
+import java.util.UUID
+
+sealed class FuncionarioException(mensagem: String): Exception(mensagem){
+    abstract val funcionarioId: UUID?
+}
+
+data class FuncionarioNaoEncontradoException(
+    override val funcionarioId: UUID?
+): FuncionarioException("Funcionário $funcionarioId não encontrado!")
