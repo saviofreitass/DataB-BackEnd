@@ -1,10 +1,6 @@
 package com.example.data_cheque.adapters.http.funcionario
 
-import com.example.data_cheque.application.funcionario.FuncionarioCreateCommand
-import com.example.data_cheque.application.funcionario.FuncionarioService
-import com.example.data_cheque.application.funcionario.FuncionarioUpdateCommand
-import com.example.data_cheque.application.funcionario.toFuncionario
-import com.example.data_cheque.application.usuario.UsuarioCreateCommand
+import com.example.data_cheque.application.funcionario.*
 import com.example.data_cheque.domain.funcionario.Funcionario
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,13 +21,13 @@ class FuncionarioHandler(
         return ResponseEntity.ok(funcionario)
     }
 
-    fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): ResponseEntity<Funcionario>{
-        val funcionario = funcionarioService.insert(funcionarioCreateCommand.toFuncionario())
+    fun insert(funcionarioCommand: FuncionarioCommand): ResponseEntity<Funcionario>{
+        val funcionario = funcionarioService.insert(funcionarioCommand)
         return ResponseEntity.status(HttpStatus.CREATED).body(funcionario)
     }
 
-    fun update(funcionarioUpdadeCommand: FuncionarioUpdateCommand, funcionarioId: String): ResponseEntity<Funcionario>{
-        val funcionario = funcionarioService.update(funcionarioUpdadeCommand, UUID.fromString(funcionarioId))
+    fun update(funcionarioCommand: FuncionarioCommand, funcionarioId: String): ResponseEntity<Funcionario>{
+        val funcionario = funcionarioService.update(funcionarioCommand, UUID.fromString(funcionarioId))
         return ResponseEntity.ok(funcionario)
     }
 

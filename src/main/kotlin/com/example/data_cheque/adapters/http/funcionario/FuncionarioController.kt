@@ -1,10 +1,6 @@
 package com.example.data_cheque.adapters.http.funcionario
 
-import com.example.data_cheque.adapters.http.usuario.UsuarioHandler
-import com.example.data_cheque.application.funcionario.FuncionarioCreateCommand
-import com.example.data_cheque.application.funcionario.FuncionarioUpdateCommand
-import com.example.data_cheque.application.funcionario.toFuncionario
-import com.example.data_cheque.application.usuario.UsuarioCreateCommand
+import com.example.data_cheque.application.funcionario.FuncionarioCommand
 import com.example.data_cheque.domain.funcionario.Funcionario
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -24,6 +20,11 @@ class FuncionarioController(
     @GetMapping("/funcionario/{funcionarioId:$UUID_REGEX}")
     fun findById(@PathVariable funcionarioId: String) : ResponseEntity<Funcionario> {
         return funcionarioHandler.findById(funcionarioId)
+    }
+
+    @PostMapping("/funcionario/cadastro")
+    fun insert(@RequestBody funcionario: FuncionarioCommand): ResponseEntity<Funcionario>{
+        return funcionarioHandler.insert(funcionario)
     }
 
     @PutMapping("/funcionario/{funcionarioId:$UUID_REGEX}")

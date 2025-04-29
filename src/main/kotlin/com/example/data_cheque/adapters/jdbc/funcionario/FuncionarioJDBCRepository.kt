@@ -1,0 +1,105 @@
+package com.example.data_cheque.adapters.jdbc.funcionario
+
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlInsertFuncionario
+import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlDeletePessoaById
+import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlUpdatePessoa
+import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectAll
+import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectById
+import com.example.data_cheque.domain.funcionario.Funcionario
+import com.example.data_cheque.domain.funcionario.FuncionarioRepository
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
+import org.springframework.stereotype.Repository
+import mu.KotlinLogging
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
+import java.util.*
+
+
+@Repository
+class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): FuncionarioRepository {
+    private companion object{
+        val LOGGER = KotlinLogging.logger { }
+    }
+
+    override fun findAll(): List<Funcionario> {
+        val funcionario = try {
+            db.query(sqlSelectAll(), rowMapper())
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao consultar os funcionarios: ${ex.message}" }
+            throw ex
+        }
+        return funcionario
+    }
+
+    override fun findById(funcionarioId: UUID): Funcionario? {
+        val funcionario = try {
+            val params = MapSqlParameterSource("id", funcionarioId)
+            db.query(sqlSelectById(), params, rowMapper()).firstOrNull()
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao consultar o funcionario: ${ex.message}" }
+            throw ex
+        }
+        return funcionario
+    }
+
+    override fun insert(funcionario: Funcionario): Boolean {
+        try {
+            val params = parametros(funcionario)
+            val linhasAfetadas = db.update(sqlInsertFuncionario(), params)
+            return linhasAfetadas > 0
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao inserir a funcionario: ${ex.message}" }
+            throw ex
+        }
+    }
+
+    override fun update(funcionario: Funcionario): Boolean {
+        try {
+            val params = parametros(funcionario)
+            val linhasAfetadas = db.update(sqlUpdatePessoa(), params)
+            return linhasAfetadas > 0
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao atualizar o funcionário: ${ex.message}" }
+            throw ex
+        }
+    }
+
+    override fun delete(funcionarioId: UUID): Boolean {
+        try {
+            val params = MapSqlParameterSource("id", funcionarioId)
+            val linhasExcluidas = db.update(sqlDeletePessoaById(), params)
+            return linhasExcluidas == 1
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao excluir o funcionário: ${ex.message}" }
+            throw ex
+        }
+    }
+
+    private fun rowMapper() = org.springframework.jdbc.core.RowMapper<Funcionario> { rs, _ ->
+        val funcionarioId = UUID.fromString(rs.getString("id"))
+        Funcionario(
+            id = funcionarioId,
+            usuarioId = UUID.fromString(rs.getString("usuario_id")),
+            pessoaId = UUID.fromString(rs.getString("pessoa_id")),
+            cargo = rs.getString("cargo"),
+            setor = rs.getString("setor"),
+            salario = rs.getDouble("salario"),
+            dataAdmissao = rs.getTimestamp("data_admissao")
+        )
+
+    }
+
+    private fun parametros(funcionario: Funcionario): MapSqlParameterSource {
+        val params = MapSqlParameterSource()
+        params.addValue("id", funcionario.id)
+        params.addValue("usuario_id", funcionario.usuarioId)
+        params.addValue("pessoa_id", funcionario.pessoaId)
+        params.addValue("cargo", funcionario.cargo)
+        params.addValue("setor", funcionario.setor)
+        params.addValue("salario", funcionario.salario)
+        params.addValue("data_admissao", funcionario.dataAdmissao)
+
+        return params
+    }
+
+
+}

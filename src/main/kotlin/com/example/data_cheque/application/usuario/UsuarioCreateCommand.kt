@@ -3,6 +3,7 @@ package com.example.data_cheque.application.usuario
 import com.example.data_cheque.domain.empregador.Empregador
 import com.example.data_cheque.domain.usuario.Role
 import com.example.data_cheque.domain.usuario.Usuario
+import kotlinx.datetime.Clock
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.sql.Timestamp
@@ -10,7 +11,7 @@ import java.util.*
 
 @Serializable
 data class UsuarioCommand(
-    val id: @Contextual UUID?,
+    val id: @Contextual UUID,
     val email: String,
     val senha: String,
     val tipoUsuario: Role,
@@ -28,18 +29,14 @@ data class UsuarioCommand(
     val dataAdmissao: Timestamp?,
 )
 
-fun UsuarioCommand.toUsuario(id: UUID = UUID.randomUUID()) = Usuario(
+fun UsuarioCommand.toUsuario(id: UUID) = Usuario(
     id = id,
     email = email,
     senha = senha,
     tipoUsuario = tipoUsuario,
-    nome = nome,
-    cpfcnpj = cpfcnpj,
-    telefone = telefone,
-    ativo = ativo,
     atualizadoEm = null,
-    usuarioCriacao = usuarioCriacao,
-    criadoEm = criadoEm,
-    usuarioAtualizacao = usuarioAtualizacao
+    usuarioCriacao = "",
+    criadoEm = Clock.System.now(),
+    usuarioAtualizacao = null
 )
 

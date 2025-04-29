@@ -5,15 +5,12 @@ object UsuarioSQLExpressions {
         SELECT 
             id,
             email,
-            senha,
-            tipoUsuario,
+            senha_hash,
+            tipo_usuario,
             criado_em,
-            atualizadoEm,
-            usuarioUpdate,
-            nome,
-            cpfcnpj,
-            telefone,
-            ativo
+            usuario_criacao,
+            atualizado_em,
+            usuario_atualizacao
         FROM usuarios u
     """.trimIndent()
 
@@ -21,65 +18,53 @@ object UsuarioSQLExpressions {
         SELECT 
             id,
             email,
-            senha,
-            tipoUsuario,
+            senha_hash,
+            tipo_usuario,
             criado_em,
-            atualizadoEm,
-            usuarioUpdate,
-            nome,
-            cpfcnpj,
-            telefone,
-            ativo
+            usuario_criacao,
+            atualizado_em,
+            usuario_atualizacao
         FROM usuarios u
         WHERE u.id = :id
     """.trimIndent()
 
-    fun sqlInsertFuncionario() = """
+    fun sqlInsertUsuario() = """
         INSERT INTO usuarios(
             id,
             email,
-            senha,
-            tipoUsuario,
+            senha_hash,
+            tipo_usuario,
             criado_em,
-            atualizadoEm,
-            usuarioUpdate,
-            nome,
-            cpfcnpj,
-            telefone,
-            ativo        
+            usuario_criacao,
+            atualizado_em,
+            usuario_atualizacao      
         ) VALUES(
            :id,
            :email,
-           :senha,
-           :tipoUsuario,
+           :senha_hash,
+           :tipo_usuario,
            :criado_em,
-           :atualizadoEm,
-           :usuarioUpdate,
-           :nome,
-           :cpfcnpj,
-           :telefone,
-           :ativo 
+           :usuario_criacao,
+           :atualizado_em,
+           :usuario_atualizacao
         )
     """.trimIndent()
     
-    fun sqlUpdateFuncionario() = """
+    fun sqlUpdateUsuario() = """
         UPDATE funcionarios
             set 
                id = :id,
                email = :email,
-               senha = :senha,
-               tipoUsuario = :tipoUsuario,
-               criado_em = :creatAt,
-               atualizadoEm = :atualizadoEm,
-               usuarioUpdate = :usuarioUpdate,
-               nome = :nome,
-               cpfcnpj = :cpfcnpj,
-               telefone = :telefone,
-               ativo = :ativo 
+               senha_hash = :senha_hash,
+               tipo_usuario = :tipoUsuario,
+               criado_em = :criado_em,
+               usuario_criacao = :usuario_criacao
+               atualizado_em = :atualizado_em,
+               usuario_atualizacao = :usuario_atualizacao
             WHERE id = :id
     """.trimIndent()
 
-    fun sqlDeleteFuncionarioById() = """
+    fun sqlDeleteUsuarioById() = """
         DELETE
         FROM funcionarios
         WHERE id = :id
