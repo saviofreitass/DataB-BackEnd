@@ -7,6 +7,8 @@ interface UsuarioRepository {
 
     fun findById(usuarioId: UUID): Usuario?
 
+    fun findByEmail(email: String): Usuario?
+
     fun insert(usuario: Usuario): Boolean
 
     fun update(usuario: Usuario): Boolean

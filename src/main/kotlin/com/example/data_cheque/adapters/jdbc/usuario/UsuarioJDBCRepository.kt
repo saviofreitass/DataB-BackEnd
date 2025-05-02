@@ -1,8 +1,10 @@
 package com.example.data_cheque.adapters.jdbc.usuario
 
+import com.example.data_cheque.adapters.http.ecrypt.PasswordBcryptEncoder
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlDeleteUsuarioById
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlInsertUsuario
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectAll
+import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectByEmail
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectById
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlUpdateUsuario
 import com.example.data_cheque.domain.usuario.Role
@@ -21,7 +23,8 @@ import java.util.*
 
 @Repository
 class UsuarioJDBCRepository (
-    private val db: NamedParameterJdbcOperations
+    private val db: NamedParameterJdbcOperations,
+    private val passwordBcryptEncoder: PasswordBcryptEncoder
 ): UsuarioRepository {
     private companion object {
         val LOGGER = KotlinLogging.logger { }
@@ -47,6 +50,18 @@ class UsuarioJDBCRepository (
             throw ex
         }
         return usuario
+    }
+
+    override fun findByEmail(email: String): Usuario? {
+
+        val user = try {
+            val params = MapSqlParameterSource("email", email)
+            db.query(sqlSelectByEmail(), params, rowMapper()).firstOrNull()
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao consultar o usuario: ${ex.message}" }
+            throw ex
+        }
+        return user
     }
 
 
@@ -94,23 +109,31 @@ class UsuarioJDBCRepository (
             tipoUsuario = Role.valueOf(rs.getString("tipo_usuario")),
             criadoEm = rs.getTimestamp("criado_em").toInstant().toKotlinInstant(),
             usuarioAtualizacao = rs.getString("usuario_atualizacao"),
-            atualizadoEm = if(rs.getTimestamp("atualizado_em") == null){
-                null
-            }else rs.getTimestamp("atualizado_em").toInstant().toKotlinInstant(),
+            atualizadoEm = rs.getTimestamp("atualizado_em").toInstant().toKotlinInstant(),
             usuarioCriacao = rs.getString("usuario_update")
         )
     }
 
     private fun parametros(usuario: Usuario): MapSqlParameterSource {
         val params = MapSqlParameterSource()
+
         params.addValue("id", usuario.id)
+
         params.addValue("email", usuario.email)
-        params.addValue("senha_hash", usuario.senha)
+
+        val senhaHasheada = passwordBcryptEncoder.encode(usuario.senha)
+        params.addValue("senha_hash", senhaHasheada)
+
         params.addValue("tipo_usuario", usuario.tipoUsuario.toString())
+
         params.addValue("criado_em", Timestamp.from(usuario.criadoEm.toJavaInstant()))
+
         params.addValue("atualizado_em", Timestamp.from(usuario.atualizadoEm?.toJavaInstant()))
+
         params.addValue("usuario_atualizacao", usuario.usuarioAtualizacao)
+
         params.addValue("usuario_criacao", usuario.usuarioCriacao)
+
         return params
     }
 }

@@ -27,6 +27,8 @@ dependencies {
 	implementation("org.flywaydb:flyway-core:9.22.3")
 	implementation("io.github.microutils:kotlin-logging:2.0.10")
 	implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("io.jsonwebtoken:jjwt:0.12.3")
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

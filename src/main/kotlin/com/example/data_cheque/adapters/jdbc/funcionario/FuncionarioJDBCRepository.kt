@@ -2,9 +2,9 @@ package com.example.data_cheque.adapters.jdbc.funcionario
 
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlInsertFuncionario
 import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlDeletePessoaById
-import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlUpdatePessoa
-import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectAll
-import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectById
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlUpdateFuncionario
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectAll
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectById
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
@@ -55,7 +55,7 @@ class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): F
     override fun update(funcionario: Funcionario): Boolean {
         try {
             val params = parametros(funcionario)
-            val linhasAfetadas = db.update(sqlUpdatePessoa(), params)
+            val linhasAfetadas = db.update(sqlUpdateFuncionario(), params)
             return linhasAfetadas > 0
         }catch (ex: Exception){
             LOGGER.error { "Houve um erro ao atualizar o funcionário: ${ex.message}" }

@@ -17,6 +17,10 @@ class UsuarioService(
         return usuarioRepository.findById(usuarioId) ?: throw UsuarioNaoEncontradoException(usuarioId)
     }
 
+    fun findByEmail(email: String): Usuario? {
+        return usuarioRepository.findByEmail(email)
+    }
+
     fun insert(usuarioCommand: UsuarioCommand): Usuario {
         val usuarioDomain = usuarioCommand.toUsuario(usuarioCommand.id)
         usuarioRepository.insert(usuarioDomain)
