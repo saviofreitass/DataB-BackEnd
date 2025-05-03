@@ -1,10 +1,11 @@
 package com.example.data_cheque.adapters.jdbc.usuario
 
-import com.example.data_cheque.adapters.http.ecrypt.PasswordBcryptEncoder
+import com.example.data_cheque.adapters.ecrypt.PasswordBcryptEncoder
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions
+import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.findByEmail
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlDeleteUsuarioById
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlInsertUsuario
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectAll
-import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectByEmail
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectById
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlUpdateUsuario
 import com.example.data_cheque.domain.usuario.Role
@@ -56,14 +57,13 @@ class UsuarioJDBCRepository (
 
         val user = try {
             val params = MapSqlParameterSource("email", email)
-            db.query(sqlSelectByEmail(), params, rowMapper()).firstOrNull()
+            db.query(findByEmail(), params, rowMapper()).firstOrNull()
         }catch (ex: Exception){
-            LOGGER.error { "Houve um erro ao consultar o usuario: ${ex.message}" }
+            LOGGER.error { "Houve um erro ao consultar o usuário: ${ex.message}" }
             throw ex
         }
         return user
     }
-
 
     override fun insert(usuario: Usuario): Boolean {
         try {
@@ -100,17 +100,17 @@ class UsuarioJDBCRepository (
     }
 
     private fun rowMapper() = RowMapper<Usuario> { rs, _ ->
-        val usuarioId = UUID.fromString(rs.getString("usuario_id"))
+        val usuarioId = UUID.fromString(rs.getString("id"))
 
         Usuario(
             id = usuarioId,
             email = rs.getString("email"),
-            senha = rs.getString("senha"),
+            senha = rs.getString("senha_hash"),
             tipoUsuario = Role.valueOf(rs.getString("tipo_usuario")),
             criadoEm = rs.getTimestamp("criado_em").toInstant().toKotlinInstant(),
-            usuarioAtualizacao = rs.getString("usuario_atualizacao"),
+            usuarioCriacao = rs.getString("usuario_criacao"),
             atualizadoEm = rs.getTimestamp("atualizado_em").toInstant().toKotlinInstant(),
-            usuarioCriacao = rs.getString("usuario_update")
+            usuarioAtualizacao = rs.getString("usuario_atualizacao")
         )
     }
 

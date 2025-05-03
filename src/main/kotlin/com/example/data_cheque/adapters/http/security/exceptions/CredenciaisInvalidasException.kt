@@ -1,4 +1,4 @@
-package com.example.data_cheque.adapters.http.ecrypt.exceptions
+package com.example.data_cheque.adapters.http.security.exceptions
 
 sealed class CredenciaisException(message: String) : Exception(message)
 

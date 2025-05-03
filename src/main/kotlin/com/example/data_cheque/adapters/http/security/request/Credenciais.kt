@@ -1,4 +1,4 @@
-package com.example.data_cheque.adapters.http.ecrypt.request
+package com.example.data_cheque.adapters.http.security.request
 
 import kotlinx.serialization.Serializable
 

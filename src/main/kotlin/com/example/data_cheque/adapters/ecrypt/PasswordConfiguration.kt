@@ -1,4 +1,4 @@
-package com.example.data_cheque.adapters.http.ecrypt
+package com.example.data_cheque.adapters.ecrypt
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

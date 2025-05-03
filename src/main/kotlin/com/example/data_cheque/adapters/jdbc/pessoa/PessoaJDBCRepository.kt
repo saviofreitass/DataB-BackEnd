@@ -1,9 +1,10 @@
 package com.example.data_cheque.adapters.jdbc.pessoa
 
-import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectAll
-import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlSelectById
+
 import com.example.data_cheque.domain.pessoa.Pessoa
 import com.example.data_cheque.domain.pessoa.PessoaRepository
+import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlSelectAll
+import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlSelectById
 import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlDeletePessoaById
 import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlInsertPessoa
 import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlUpdatePessoa

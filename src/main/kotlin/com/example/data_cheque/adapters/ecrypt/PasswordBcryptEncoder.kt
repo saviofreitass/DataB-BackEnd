@@ -1,4 +1,4 @@
-package com.example.data_cheque.adapters.http.ecrypt
+package com.example.data_cheque.adapters.ecrypt
 
 import com.example.data_cheque.application.usuario.EncoderPassword
 import org.springframework.stereotype.Component

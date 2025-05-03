@@ -1,4 +1,4 @@
-package com.example.data_cheque.adapters.http.ecrypt.exceptions
+package com.example.data_cheque.adapters.http.security.exceptions
 
 import com.example.data_cheque.adapters.http.error.ErrorResponse
 import jakarta.servlet.http.HttpServletRequest

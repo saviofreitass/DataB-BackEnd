@@ -1,8 +1,6 @@
-package com.example.data_cheque.adapters.http.ecrypt
+package com.example.data_cheque.adapters.http.security
 
-import com.example.data_cheque.adapters.http.ecrypt.exceptions.CustomEntryPoint
-import com.example.data_cheque.adapters.http.security.JWTUtil
-import com.example.data_cheque.adapters.http.security.JwtAuthenticationFilter
+import com.example.data_cheque.adapters.http.security.exceptions.CustomEntryPoint
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

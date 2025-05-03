@@ -1,7 +1,7 @@
 package com.example.data_cheque.adapters.jdbc.funcionario
 
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlDeleteFuncionarioById
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlInsertFuncionario
-import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlDeletePessoaById
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlUpdateFuncionario
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectAll
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectById
@@ -66,7 +66,7 @@ class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): F
     override fun delete(funcionarioId: UUID): Boolean {
         try {
             val params = MapSqlParameterSource("id", funcionarioId)
-            val linhasExcluidas = db.update(sqlDeletePessoaById(), params)
+            val linhasExcluidas = db.update(sqlDeleteFuncionarioById(), params)
             return linhasExcluidas == 1
         }catch (ex: Exception){
             LOGGER.error { "Houve um erro ao excluir o funcionário: ${ex.message}" }

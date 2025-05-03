@@ -28,11 +28,18 @@ object UsuarioSQLExpressions {
         WHERE u.id = :id
     """.trimIndent()
 
-    fun sqlSelectByEmail() = """
+    fun findByEmail() = """
         SELECT 
-            u.id
-        FROM usuarios u
-        WHERE u.email = :email
+            id,
+            email,
+            senha_hash,
+            tipo_usuario,
+            criado_em,
+            usuario_criacao,
+            atualizado_em,
+            usuario_atualizacao
+        FROM usuarios
+        WHERE email = :email
     """.trimIndent()
 
     fun sqlInsertUsuario() = """

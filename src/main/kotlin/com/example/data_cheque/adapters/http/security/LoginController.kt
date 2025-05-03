@@ -1,9 +1,8 @@
-package com.example.data_cheque.adapters.http.ecrypt
+package com.example.data_cheque.adapters.http.security
 
-import com.example.data_cheque.adapters.http.ecrypt.exceptions.CredenciaisInvalidasException
-import com.example.data_cheque.adapters.http.ecrypt.request.Credenciais
-import com.example.data_cheque.adapters.http.ecrypt.response.Token
-import com.example.data_cheque.adapters.http.security.JWTUtil
+import com.example.data_cheque.adapters.http.security.exceptions.CredenciaisInvalidasException
+import com.example.data_cheque.adapters.http.security.request.Credenciais
+import com.example.data_cheque.adapters.http.security.response.Token
 import com.example.data_cheque.application.usuario.EncoderPassword
 import com.example.data_cheque.application.usuario.UsuarioService
 import org.springframework.web.bind.annotation.CrossOrigin
