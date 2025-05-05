@@ -1,9 +1,10 @@
 package com.example.data_cheque.domain.funcionario
 
+import com.example.data_cheque.application.funcionario.FuncionarioCommandResponse
 import java.util.*
 
 interface FuncionarioRepository {
-    fun findAll(): List<Funcionario>
+    fun findAll(): List<FuncionarioCommandResponse>
 
     fun findById(funcionarioId: UUID): Funcionario?
 

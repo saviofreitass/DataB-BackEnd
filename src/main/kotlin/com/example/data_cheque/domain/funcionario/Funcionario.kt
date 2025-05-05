@@ -10,5 +10,5 @@ data class Funcionario(
     val cargo: String,
     val setor:  String,
     val salario: Double,
-    val dataAdmissao: Timestamp,
+    val dataAdmissao: Timestamp
 )

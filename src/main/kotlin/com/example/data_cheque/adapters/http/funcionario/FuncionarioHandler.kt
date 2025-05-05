@@ -11,7 +11,7 @@ import java.util.UUID
 class FuncionarioHandler(
     private val funcionarioService: FuncionarioService,
 ) {
-    fun findAll(): ResponseEntity<List<Funcionario>> {
+    fun findAll(): ResponseEntity<List<FuncionarioCommandResponse>> {
         val funcionario = funcionarioService.findAll()
         return ResponseEntity.ok(funcionario)
     }

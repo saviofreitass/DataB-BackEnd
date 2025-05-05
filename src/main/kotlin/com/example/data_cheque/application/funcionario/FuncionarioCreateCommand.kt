@@ -29,6 +29,27 @@ data class FuncionarioCommand(
     val usuarioAtualizacao: String
 )
 
+@Serializable
+data class FuncionarioCommandResponse(
+    val id: @Contextual UUID?,
+//    val contadorId: UUID,
+    val pessoaId: UUID = UUID.randomUUID(),
+    val usuarioId: UUID = UUID.randomUUID(),
+    val nome: String,
+    val cpfcnpj: String,
+    val telefone: String,
+    val cargo: String,
+    val setor: String,
+    val salario: Double,
+    val dataAdmissao: Timestamp,
+    val email: String,
+    val criadoEm: Instant = Clock.System.now(),
+    val usuarioCriacao: String,
+    val atualizadoEm: Instant = Clock.System.now(),
+    val usuarioAtualizacao: String,
+    val ativo: Boolean
+)
+
 fun FuncionarioCommand.toFuncionario(id: UUID) = Funcionario(
     id = id,
 //    contadorId = contadorId,

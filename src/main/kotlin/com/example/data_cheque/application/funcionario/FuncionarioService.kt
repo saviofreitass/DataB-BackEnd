@@ -18,7 +18,7 @@ class FuncionarioService (
     private val usuarioRepository: UsuarioRepository,
     private val pessoaRepository: PessoaRepository
 ) {
-    fun findAll(): List<Funcionario> {
+    fun findAll(): List<FuncionarioCommandResponse> {
         return funcionarioRepository.findAll()
     }
     fun findById(funcionarioId: UUID): Funcionario {

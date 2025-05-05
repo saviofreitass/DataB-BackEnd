@@ -1,6 +1,8 @@
 package com.example.data_cheque.adapters.http.funcionario
 
 import com.example.data_cheque.application.funcionario.FuncionarioCommand
+import com.example.data_cheque.application.funcionario.FuncionarioCommandResponse
+import com.example.data_cheque.application.pessoa.PessoaService
 import com.example.data_cheque.domain.funcionario.Funcionario
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -9,11 +11,9 @@ private const val UUID_REGEX = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}
 
 @RestController
 @CrossOrigin(origins = arrayOf("*"))
-class FuncionarioController(
-    private val funcionarioHandler: FuncionarioHandler
-) {
+class FuncionarioController(private val funcionarioHandler: FuncionarioHandler) {
     @GetMapping("/funcionario")
-    fun findAll(): ResponseEntity<List<Funcionario>> {
+    fun findAll(): ResponseEntity<List<FuncionarioCommandResponse>> {
         return funcionarioHandler.findAll()
     }
 

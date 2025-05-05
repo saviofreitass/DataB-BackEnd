@@ -22,6 +22,7 @@ class SecurityConfiguration (
             it.requestMatchers("/users").permitAll()
             it.requestMatchers("/funcionario/cadastro").permitAll()
             it.requestMatchers("/funcionario/{funcionarioId}").permitAll()
+            it.requestMatchers("/funcionario").permitAll()
             it.anyRequest().authenticated()
         }.csrf {
             it.disable()
@@ -37,7 +38,7 @@ class SecurityConfiguration (
     @Bean
     fun corsConfigurationSource(): UrlBasedCorsConfigurationSource {
         val configuration = CorsConfiguration().apply {
-            allowedOrigins = listOf("http://localhost:3000")
+            allowedOrigins = listOf("http://localhost:5173")
             allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
             allowedHeaders = listOf("Authorization", "Content-Type")
             allowCredentials = true

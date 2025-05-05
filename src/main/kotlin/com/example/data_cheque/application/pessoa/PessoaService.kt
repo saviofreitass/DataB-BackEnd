@@ -12,10 +12,10 @@ class PessoaService(private val pessoaRepository: PessoaRepository){
     fun findAll(): List<Pessoa> {
         return pessoaRepository.findAll()
     }
+
     fun findById(pessoaId: UUID): Pessoa {
         return pessoaRepository.findById(pessoaId) ?: throw PessoaNaoEncontradaException(pessoaId)
     }
-
 
     fun insert(pessoa: PessoaCommand, id: UUID): Pessoa {
         val pessoaDomain = pessoa.toPessoa(id)
