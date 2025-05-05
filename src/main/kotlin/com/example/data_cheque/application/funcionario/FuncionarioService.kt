@@ -21,7 +21,7 @@ class FuncionarioService (
     fun findAll(): List<FuncionarioCommandResponse> {
         return funcionarioRepository.findAll()
     }
-    fun findById(funcionarioId: UUID): Funcionario {
+    fun findById(funcionarioId: UUID): FuncionarioCommandResponse {
         return funcionarioRepository.findById(funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
     }
 
@@ -64,7 +64,7 @@ class FuncionarioService (
         return novoFuncionario
     }
 
-    fun update(funcionario: FuncionarioCommand, funcionarioId: UUID): Funcionario {
+    fun update(funcionario: FuncionarioCommand, funcionarioId: UUID): FuncionarioCommandResponse {
         val usuarioUpdate = Usuario(
             id = UUID.randomUUID(),
             email = funcionario.email,

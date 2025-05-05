@@ -33,10 +33,10 @@ class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): F
         return funcionario
     }
 
-    override fun findById(funcionarioId: UUID): Funcionario? {
+    override fun findById(funcionarioId: UUID): FuncionarioCommandResponse? {
         val funcionario = try {
             val params = MapSqlParameterSource("id", funcionarioId)
-            db.query(sqlSelectById(), params, rowMapper()).firstOrNull()
+            db.query(sqlSelectById(), params, RowMapperResponse()).firstOrNull()
         }catch (ex: Exception){
             LOGGER.error { "Houve um erro ao consultar o funcionario: ${ex.message}" }
             throw ex

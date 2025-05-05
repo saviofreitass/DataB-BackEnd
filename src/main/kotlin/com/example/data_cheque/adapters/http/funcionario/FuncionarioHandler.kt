@@ -16,7 +16,7 @@ class FuncionarioHandler(
         return ResponseEntity.ok(funcionario)
     }
 
-    fun findById(funcionarioId: String): ResponseEntity<Funcionario> {
+    fun findById(funcionarioId: String): ResponseEntity<FuncionarioCommandResponse> {
         val funcionario = funcionarioService.findById(UUID.fromString(funcionarioId))
         return ResponseEntity.ok(funcionario)
     }
@@ -26,7 +26,7 @@ class FuncionarioHandler(
         return ResponseEntity.status(HttpStatus.CREATED).body(funcionario)
     }
 
-    fun update(funcionarioCommand: FuncionarioCommand, funcionarioId: String): ResponseEntity<Funcionario>{
+    fun update(funcionarioCommand: FuncionarioCommand, funcionarioId: String): ResponseEntity<FuncionarioCommandResponse>{
         val funcionario = funcionarioService.update(funcionarioCommand, UUID.fromString(funcionarioId))
         return ResponseEntity.ok(funcionario)
     }

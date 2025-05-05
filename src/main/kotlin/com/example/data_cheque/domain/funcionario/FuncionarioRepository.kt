@@ -6,7 +6,7 @@ import java.util.*
 interface FuncionarioRepository {
     fun findAll(): List<FuncionarioCommandResponse>
 
-    fun findById(funcionarioId: UUID): Funcionario?
+    fun findById(funcionarioId: UUID): FuncionarioCommandResponse?
 
     fun insert(funcionario: Funcionario): Boolean
 

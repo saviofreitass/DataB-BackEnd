@@ -18,7 +18,7 @@ class FuncionarioController(private val funcionarioHandler: FuncionarioHandler) 
     }
 
     @GetMapping("/funcionario/{funcionarioId:$UUID_REGEX}")
-    fun findById(@PathVariable funcionarioId: String) : ResponseEntity<Funcionario> {
+    fun findById(@PathVariable funcionarioId: String) : ResponseEntity<FuncionarioCommandResponse> {
         return funcionarioHandler.findById(funcionarioId)
     }
 
@@ -29,7 +29,7 @@ class FuncionarioController(private val funcionarioHandler: FuncionarioHandler) 
 
     @PutMapping("/funcionario/{funcionarioId:$UUID_REGEX}")
     fun update(@RequestBody funcionario: FuncionarioCommand,
-               @PathVariable funcionarioId: String): ResponseEntity<Funcionario> {
+               @PathVariable funcionarioId: String): ResponseEntity<FuncionarioCommandResponse> {
         return funcionarioHandler.update(funcionario, funcionarioId)
     }
 
