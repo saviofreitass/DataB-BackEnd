@@ -65,14 +65,14 @@ object UsuarioSQLExpressions {
     """.trimIndent()
     
     fun sqlUpdateUsuario() = """
-        UPDATE funcionarios
+        UPDATE usuarios
             set 
                id = :id,
                email = :email,
                senha_hash = :senha_hash,
-               tipo_usuario = :tipoUsuario,
+               tipo_usuario = :tipo_usuario,
                criado_em = :criado_em,
-               usuario_criacao = :usuario_criacao
+               usuario_criacao = :usuario_criacao,
                atualizado_em = :atualizado_em,
                usuario_atualizacao = :usuario_atualizacao
             WHERE id = :id
@@ -80,7 +80,7 @@ object UsuarioSQLExpressions {
 
     fun sqlDeleteUsuarioById() = """
         DELETE
-        FROM funcionarios
+        FROM usuarios
         WHERE id = :id
     """.trimIndent()
 }

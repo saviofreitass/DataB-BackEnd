@@ -4,6 +4,7 @@ import com.example.data_cheque.adapters.http.security.exceptions.CustomEntryPoin
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
@@ -11,6 +12,7 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
+@EnableWebSecurity
 class SecurityConfiguration (
     private val jwtUtil: JWTUtil
 ) {
@@ -18,11 +20,11 @@ class SecurityConfiguration (
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain{
         return http.authorizeHttpRequests {
-            it.requestMatchers("/login").permitAll()
-            it.requestMatchers("/users").permitAll()
+            it.requestMatchers("/login/**").permitAll()
+//            it.requestMatchers("/users").permitAll()
             it.requestMatchers("/funcionario/cadastro").permitAll()
-            it.requestMatchers("/funcionario/{funcionarioId}").permitAll()
-            it.requestMatchers("/funcionario").permitAll()
+//            it.requestMatchers("/funcionario/{funcionarioId}").permitAll()
+//            it.requestMatchers("/funcionario").permitAll()
             it.anyRequest().authenticated()
         }.csrf {
             it.disable()

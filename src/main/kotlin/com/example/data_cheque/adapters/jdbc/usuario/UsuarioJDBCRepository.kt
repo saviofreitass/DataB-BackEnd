@@ -1,6 +1,7 @@
 package com.example.data_cheque.adapters.jdbc.usuario
 
 import com.example.data_cheque.adapters.ecrypt.PasswordBcryptEncoder
+import com.example.data_cheque.adapters.http.error.ErrorResponse
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.findByEmail
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlDeleteUsuarioById
@@ -17,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.stereotype.Repository
 import org.springframework.jdbc.core.RowMapper
 import mu.KotlinLogging
+import org.apache.coyote.BadRequestException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import java.sql.Timestamp
 import java.util.*

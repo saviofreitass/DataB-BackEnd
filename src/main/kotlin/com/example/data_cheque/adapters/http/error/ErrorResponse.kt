@@ -1,5 +1,6 @@
 package com.example.data_cheque.adapters.http.error
 
+
 import kotlinx.serialization.Serializable
 import java.util.UUID
 

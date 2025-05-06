@@ -1,6 +1,8 @@
 package com.example.data_cheque.application.funcionario
 
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoEncontradoException
+import com.example.data_cheque.application.pessoa.exception.PessoaNaoEncontradaException
+import com.example.data_cheque.application.usuario.exception.*
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
 import com.example.data_cheque.domain.pessoa.Pessoa
@@ -25,85 +27,121 @@ class FuncionarioService (
         return funcionarioRepository.findById(funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
     }
 
-    fun insert(funcionario: FuncionarioCommand): Funcionario {
+    fun insert(funcionario: FuncionarioCreateCommand): Funcionario {
 
-        val novoUsuario = Usuario(
-            id = funcionario.usuarioId,
-            email = funcionario.email,
-            senha = funcionario.senha,
-            tipoUsuario = Role.ROLE_FUNCIONARIO,
-            criadoEm = funcionario.criadoEm,
-            usuarioCriacao = funcionario.usuarioCriacao,
-            atualizadoEm = funcionario.atualizadoEm,
-            usuarioAtualizacao = funcionario.usuarioAtualizacao
-        )
-        usuarioRepository.insert(novoUsuario)
+        try {
+            val usuarioId = UUID.randomUUID()
+            val novoUsuario = Usuario(
+                id = usuarioId,
+                email = funcionario.email,
+                senha = funcionario.senha,
+                tipoUsuario = Role.ROLE_FUNCIONARIO,
+                criadoEm = funcionario.criadoEm,
+                usuarioCriacao = funcionario.usuarioCriacao,
+                atualizadoEm = funcionario.atualizadoEm,
+                usuarioAtualizacao = funcionario.usuarioAtualizacao
+            )
 
-        val novaPessoa = Pessoa(
-            id = funcionario.pessoaId,
-            usuarioId = novoUsuario.id,
-            nome = funcionario.nome,
-            cpfcnpj = funcionario.cpfcnpj,
-            telefone = funcionario.telefone,
-            ativo = true
-        )
-        pessoaRepository.insert(novaPessoa)
+            val pessoaId = UUID.randomUUID()
+            val novaPessoa = Pessoa(
+                id = pessoaId,
+                usuarioId = novoUsuario.id,
+                nome = funcionario.nome,
+                cpfcnpj = funcionario.cpfcnpj,
+                telefone = funcionario.telefone,
+                ativo = true
+            )
 
-        val novoFuncionario = Funcionario(
-            id = UUID.randomUUID(),
-            usuarioId = novoUsuario.id,
-            pessoaId = novaPessoa.id,
-//            empregadorId = request.empregadorId,
-//            contadorId = request.contadorId,
-            cargo = funcionario.cargo,
-            setor = funcionario.setor,
-            salario = funcionario.salario,
-            dataAdmissao = funcionario.dataAdmissao
-        )
-        funcionarioRepository.insert(novoFuncionario)
-        return novoFuncionario
+            validandoEmail(novoUsuario.email, novoUsuario.id)
+            validarSenha(novoUsuario.senha)
+
+            usuarioRepository.insert(novoUsuario)
+            pessoaRepository.insert(novaPessoa)
+            val novoFuncionario = funcionario.toFuncionario(novaPessoa.id, novoUsuario.id)
+            funcionarioRepository.insert(novoFuncionario)
+
+            return novoFuncionario
+        }catch(e: Exception){
+            throw e
+        }
     }
 
-    fun update(funcionario: FuncionarioCommand, funcionarioId: UUID): FuncionarioCommandResponse {
-        val usuarioUpdate = Usuario(
-            id = UUID.randomUUID(),
-            email = funcionario.email,
-            senha = funcionario.senha,
-            tipoUsuario = Role.ROLE_FUNCIONARIO,
-            criadoEm = Clock.System.now(),
-            usuarioCriacao = "sistema",
-            atualizadoEm = null,
-            usuarioAtualizacao = null
-        )
-        usuarioRepository.update(usuarioUpdate)
+    fun update(update: FuncionarioUpdateCommand, funcionarioId: UUID): FuncionarioCommandResponse {
+        val funcionarioExistente = funcionarioRepository.findById(funcionarioId)
+            ?: throw FuncionarioNaoEncontradoException(funcionarioId)
 
-        val pessoaUpdate = Pessoa(
-            id = UUID.randomUUID(),
-            usuarioId = usuarioUpdate.id,
-            nome = funcionario.nome,
-            cpfcnpj = funcionario.cpfcnpj,
-            telefone = funcionario.telefone,
-            ativo = true
-        )
-        pessoaRepository.update(pessoaUpdate)
+        val usuarioExistente = usuarioRepository.findById(funcionarioExistente.usuarioId)
+            ?: throw UsuarioNaoEncontradoException(funcionarioExistente.usuarioId)
 
-        val novoFuncionario = Funcionario(
-            id = UUID.randomUUID(),
-            usuarioId = usuarioUpdate.id,
-            pessoaId = pessoaUpdate.id,
-//            empregadorId = request.empregadorId,
-//            contadorId = request.contadorId,
-            cargo = funcionario.cargo,
-            setor = funcionario.setor,
-            salario = funcionario.salario,
-            dataAdmissao = funcionario.dataAdmissao
-        )
-        funcionarioRepository.update(novoFuncionario)
-        return findById(funcionarioId = funcionarioId)
+        val pessoaExistente = pessoaRepository.findById(funcionarioExistente.pessoaId)
+            ?: throw PessoaNaoEncontradaException(funcionarioExistente.pessoaId)
+
+        try {
+            val usuarioAtualizado = usuarioExistente.copy(
+                id = usuarioExistente.id,
+                email = update.email ?: usuarioExistente.email,
+                senha = update.senha ?: usuarioExistente.senha,
+                tipoUsuario = usuarioExistente.tipoUsuario,
+                criadoEm = usuarioExistente.criadoEm,
+                usuarioCriacao = usuarioExistente.usuarioCriacao,
+                atualizadoEm = Clock.System.now(),
+                usuarioAtualizacao = update.usuarioAtualizacao ?: usuarioExistente.usuarioAtualizacao
+            )
+
+            val funcionarioAtualizado = funcionarioExistente.copy(
+                cargo = update.cargo ?: funcionarioExistente.cargo,
+                setor = update.setor ?: funcionarioExistente.setor,
+                salario = update.salario ?: funcionarioExistente.salario,
+                dataAdmissao = update.dataAdmissao ?: funcionarioExistente.dataAdmissao,
+            )
+
+            val pessoaAtualizada = pessoaExistente.copy(
+                id = pessoaExistente.id,
+                usuarioId = pessoaExistente.usuarioId,
+                nome = update.nome ?: pessoaExistente.nome,
+                cpfcnpj = update.cpfcnpj ?: pessoaExistente.cpfcnpj,
+                telefone = update.telefone ?: pessoaExistente.telefone,
+                ativo = update.ativo ?: pessoaExistente.ativo
+            )
+
+            validandoEmail(usuarioAtualizado.email, usuarioAtualizado.id)
+            validarSenha(usuarioAtualizado.senha)
+
+            usuarioRepository.update(update.toUsuario(usuarioAtualizado))
+            pessoaRepository.update(update.toPessoa(pessoaAtualizada))
+            funcionarioRepository.update(update.toFuncionario(funcionarioAtualizado))
+            return findById(funcionarioId)
+        }catch (e: Exception){
+            throw e
+        }
+
     }
 
     fun delete(funcionarioId: UUID){
         funcionarioRepository.findById(funcionarioId = funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
         funcionarioRepository.delete(funcionarioId)
     }
+
+    fun validandoEmail(email: String, id: UUID){
+        val regex = Regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}$")
+
+        val usuario = usuarioRepository.findByEmail(email)
+
+        if(usuario != null && id != usuario.id){
+            throw EmailDuplicadoException(email)
+        }
+
+        if (!regex.matches(email)) {
+            throw EmailInvalidoException(email)
+        }
+    }
+
+    private fun validarSenha(senha: String) {
+        val regex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}$")
+
+        if (!regex.matches(senha)) {
+            throw SenhaInvalidaException("Senha inválida")
+        }
+    }
+
 }

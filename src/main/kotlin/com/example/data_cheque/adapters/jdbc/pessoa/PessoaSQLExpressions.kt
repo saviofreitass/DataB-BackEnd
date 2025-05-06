@@ -45,7 +45,8 @@ object PessoaSQLExpressions {
     fun sqlUpdatePessoa() = """
         UPDATE pessoa
             set 
-                usuario_id = :nome,
+                id = :id,
+                usuario_id = :usuario_id,
                 nome = :nome,
                 cpfcnpj = :cpfcnpj,
                 telefone  = :telefone,

@@ -9,3 +9,4 @@ sealed class UsuarioException(mensagem: String): Exception(mensagem){
 data class UsuarioNaoEncontradoException(
     override val usuarioId: UUID?
 ): UsuarioException("Usuário $usuarioId não encontrado!")
+
