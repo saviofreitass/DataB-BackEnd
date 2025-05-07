@@ -25,20 +25,20 @@ object ContrachequeSqlExpressions {
     fun sqlSelectAll() =
         """
         SELECT ${campos()}
-        from contracheque
+        from data_cheque.contracheque
         WHERE func_id = :func_id
         """.trimIndent()
 
     fun sqlSelectById() =
         """
         SELECT ${campos()}
-        from contracheque
+        from data_cheque.contracheque
         WHERE func_id = :func_id AND id = :id
         """.trimIndent()
 
     fun sqlInsertContracheque() =
         """
-        INSERT INTO contracheque(
+        INSERT INTO data_cheque.contracheque(
             id,
             func_id,
             data_pagamento,
@@ -81,7 +81,7 @@ object ContrachequeSqlExpressions {
 
     fun sqlUpdateContracheque() =
         """
-        UPDATE contracheque
+        UPDATE data_cheque.contracheque
         SET data_pagamento = :data_pagamento,
             data_ref_inicio = :data_ref_inicio,       
             data_ref_fim = :data_ref_fim,         
@@ -101,7 +101,7 @@ object ContrachequeSqlExpressions {
 
     fun sqlDeleteById() =
         """
-        DELETE from contracheque
+        DELETE from data_cheque.contracheque
         WHERE id = :id
         """.trimIndent()
     

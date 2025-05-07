@@ -3,6 +3,7 @@ package com.example.data_cheque.adapters.http.contracheque
 import com.example.data_cheque.domain.contracheque.Contracheque
 import com.example.data_cheque.application.contracheque.ContrachequeCommand
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 private const val UUID_REGEX = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}"
 
+@CrossOrigin(origins = arrayOf("*"))
 @RestController
 class ContrachequeController(
     private val contrachequeHandler: ContrachequeHandler
