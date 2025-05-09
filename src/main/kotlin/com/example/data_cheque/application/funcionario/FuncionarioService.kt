@@ -1,14 +1,17 @@
 package com.example.data_cheque.application.funcionario
 
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoEncontradoException
-import com.example.data_cheque.application.pessoa.exception.PessoaNaoEncontradaException
+import com.example.data_cheque.application.pessoa.PessoaCreateCommand
+import com.example.data_cheque.application.pessoa.PessoaService
+import com.example.data_cheque.application.usuario.EncoderPassword
+import com.example.data_cheque.application.usuario.UsuarioCreateCommand
+import com.example.data_cheque.application.usuario.UsuarioService
 import com.example.data_cheque.application.usuario.exception.*
+import com.example.data_cheque.application.usuario.toUsuario
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
-import com.example.data_cheque.domain.pessoa.Pessoa
 import com.example.data_cheque.domain.pessoa.PessoaRepository
 import com.example.data_cheque.domain.usuario.Role
-import com.example.data_cheque.domain.usuario.Usuario
 import com.example.data_cheque.domain.usuario.UsuarioRepository
 import kotlinx.datetime.Clock
 import org.springframework.stereotype.Service
@@ -18,7 +21,8 @@ import java.util.*
 class FuncionarioService (
     private val funcionarioRepository: FuncionarioRepository,
     private val usuarioRepository: UsuarioRepository,
-    private val pessoaRepository: PessoaRepository
+    private val pessoaRepository: PessoaRepository,
+    private val encoderPassword: EncoderPassword
 ) {
     fun findAll(): List<FuncionarioCommandResponse> {
         return funcionarioRepository.findAll()
@@ -30,9 +34,7 @@ class FuncionarioService (
     fun insert(funcionario: FuncionarioCreateCommand): Funcionario {
 
         try {
-            val usuarioId = UUID.randomUUID()
-            val novoUsuario = Usuario(
-                id = usuarioId,
+            val usuarioCreateCommand = UsuarioCreateCommand(
                 email = funcionario.email,
                 senha = funcionario.senha,
                 tipoUsuario = Role.ROLE_FUNCIONARIO,
@@ -42,9 +44,9 @@ class FuncionarioService (
                 usuarioAtualizacao = funcionario.usuarioAtualizacao
             )
 
-            val pessoaId = UUID.randomUUID()
-            val novaPessoa = Pessoa(
-                id = pessoaId,
+            val novoUsuario = usuarioRepository.insert(usuarioCreateCommand.toUsuario(encoderPassword))
+
+            val pessoaCreateCommand = PessoaCreateCommand(
                 usuarioId = novoUsuario.id,
                 nome = funcionario.nome,
                 cpfcnpj = funcionario.cpfcnpj,
@@ -52,11 +54,8 @@ class FuncionarioService (
                 ativo = true
             )
 
-            validandoEmail(novoUsuario.email, novoUsuario.id)
-            validarSenha(novoUsuario.senha)
+            val novaPessoa = pessoaService.insert(pessoaCreateCommand)
 
-            usuarioRepository.insert(novoUsuario)
-            pessoaRepository.insert(novaPessoa)
             val novoFuncionario = funcionario.toFuncionario(novaPessoa.id, novoUsuario.id)
             funcionarioRepository.insert(novoFuncionario)
 
@@ -66,50 +65,45 @@ class FuncionarioService (
         }
     }
 
-    fun update(update: FuncionarioUpdateCommand, funcionarioId: UUID): FuncionarioCommandResponse {
+    fun update(funcionarioUpdateCommand: FuncionarioUpdateCommand, funcionarioId: UUID): FuncionarioCommandResponse {
         val funcionarioExistente = funcionarioRepository.findById(funcionarioId)
             ?: throw FuncionarioNaoEncontradoException(funcionarioId)
 
-        val usuarioExistente = usuarioRepository.findById(funcionarioExistente.usuarioId)
-            ?: throw UsuarioNaoEncontradoException(funcionarioExistente.usuarioId)
+        val usuarioExistente = usuarioService.findById(funcionarioExistente.usuarioId)
 
-        val pessoaExistente = pessoaRepository.findById(funcionarioExistente.pessoaId)
-            ?: throw PessoaNaoEncontradaException(funcionarioExistente.pessoaId)
+        val pessoaExistente = pessoaService.findById(funcionarioExistente.pessoaId)
 
         try {
             val usuarioAtualizado = usuarioExistente.copy(
                 id = usuarioExistente.id,
-                email = update.email ?: usuarioExistente.email,
-                senha = update.senha ?: usuarioExistente.senha,
+                email = funcionarioUpdateCommand.email ?: usuarioExistente.email,
+                senha = funcionarioUpdateCommand.senha ?: usuarioExistente.senha,
                 tipoUsuario = usuarioExistente.tipoUsuario,
                 criadoEm = usuarioExistente.criadoEm,
                 usuarioCriacao = usuarioExistente.usuarioCriacao,
                 atualizadoEm = Clock.System.now(),
-                usuarioAtualizacao = update.usuarioAtualizacao ?: usuarioExistente.usuarioAtualizacao
-            )
-
-            val funcionarioAtualizado = funcionarioExistente.copy(
-                cargo = update.cargo ?: funcionarioExistente.cargo,
-                setor = update.setor ?: funcionarioExistente.setor,
-                salario = update.salario ?: funcionarioExistente.salario,
-                dataAdmissao = update.dataAdmissao ?: funcionarioExistente.dataAdmissao,
+                usuarioAtualizacao = funcionarioUpdateCommand.usuarioAtualizacao ?: usuarioExistente.usuarioAtualizacao
             )
 
             val pessoaAtualizada = pessoaExistente.copy(
                 id = pessoaExistente.id,
                 usuarioId = pessoaExistente.usuarioId,
-                nome = update.nome ?: pessoaExistente.nome,
-                cpfcnpj = update.cpfcnpj ?: pessoaExistente.cpfcnpj,
-                telefone = update.telefone ?: pessoaExistente.telefone,
-                ativo = update.ativo ?: pessoaExistente.ativo
+                nome = funcionarioUpdateCommand.nome ?: pessoaExistente.nome,
+                cpfcnpj = funcionarioUpdateCommand.cpfcnpj ?: pessoaExistente.cpfcnpj,
+                telefone = funcionarioUpdateCommand.telefone ?: pessoaExistente.telefone,
+                ativo = funcionarioUpdateCommand.ativo ?: pessoaExistente.ativo
             )
 
-            validandoEmail(usuarioAtualizado.email, usuarioAtualizado.id)
-            validarSenha(usuarioAtualizado.senha)
+            val funcionarioAtualizado = funcionarioExistente.copy(
+                cargo = funcionarioUpdateCommand.cargo ?: funcionarioExistente.cargo,
+                setor = funcionarioUpdateCommand.setor ?: funcionarioExistente.setor,
+                salario = funcionarioUpdateCommand.salario ?: funcionarioExistente.salario,
+                dataAdmissao = funcionarioUpdateCommand.dataAdmissao ?: funcionarioExistente.dataAdmissao,
+            )
 
-            usuarioRepository.update(update.toUsuario(usuarioAtualizado))
-            pessoaRepository.update(update.toPessoa(pessoaAtualizada))
-            funcionarioRepository.update(update.toFuncionario(funcionarioAtualizado))
+            usuarioService.update(usuarioAtualizado)
+            pessoaService.funcionarioUpdateCommand(funcionarioUpdateCommand.toPessoa(pessoaAtualizada))
+            funcionarioRepository.funcionarioUpdateCommand(funcionarioUpdateCommand.toFuncionario(funcionarioAtualizado))
             return findById(funcionarioId)
         }catch (e: Exception){
             throw e
@@ -123,7 +117,7 @@ class FuncionarioService (
     }
 
     fun validandoEmail(email: String, id: UUID){
-        val regex = Regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}$")
+        val regex = Regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+$")
 
         val usuario = usuarioRepository.findByEmail(email)
 

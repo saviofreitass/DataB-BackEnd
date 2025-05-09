@@ -17,16 +17,16 @@ class PessoaService(private val pessoaRepository: PessoaRepository){
         return pessoaRepository.findById(pessoaId) ?: throw PessoaNaoEncontradaException(pessoaId)
     }
 
-    fun insert(pessoa: PessoaCommand, id: UUID): Pessoa {
-        val pessoaDomain = pessoa.toPessoa(id)
+    fun insert(pessoaCreateCommand: PessoaCreateCommand): Pessoa {
+        val pessoaDomain = pessoaCreateCommand.toPessoa()
         pessoaRepository.insert(pessoaDomain)
         return findById(pessoaDomain.id)
     }
 
-    fun update(pessoa: PessoaCommand): Pessoa {
-        pessoaRepository.findById(pessoa.id) ?: throw PessoaNaoEncontradaException(pessoa.id)
-        pessoaRepository.update(pessoa.toPessoa(pessoa.id))
-        return findById(pessoa.id)
+    fun update(pessoaUpdateCommand: PessoaUpdateCommand): Pessoa {
+        pessoaRepository.findById(pessoaUpdateCommand.id) ?: throw PessoaNaoEncontradaException(pessoaUpdateCommand.id)
+        pessoaRepository.update(pessoaUpdateCommand.toPessoa(pessoaUpdateCommand.id))
+        return findById(pessoaUpdateCommand.id)
     }
 
     fun delete(pessoaId: UUID){
