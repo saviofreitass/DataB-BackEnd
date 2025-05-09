@@ -21,22 +21,20 @@ class UsuarioService(
         return usuarioRepository.findByEmail(email)
     }
 
-    fun insert(usuarioCreateCommand: UsuarioCreateCommand): Usuario {
-        val usuarioDomain = usuarioCreateCommand.toUsuario()
+    fun insert(usuarioCommand: UsuarioCommand): Usuario {
+        val usuarioDomain = usuarioCommand.toUsuario(usuarioCommand.id)
         usuarioRepository.insert(usuarioDomain)
         return findById(usuarioDomain.id)
     }
 
-    fun update(usuarioUpdateCommand: UsuarioUpdateCommand): Usuario {
-        usuarioRepository.findById(usuarioUpdateCommand.id) ?: throw UsuarioNaoEncontradoException(usuarioUpdateCommand.id)
-        usuarioRepository.update(usuarioUpdateCommand.toUsuario(usuarioUpdateCommand.id))
-        return findById(usuarioUpdateCommand.id)
+    fun update(usuario: UsuarioCommand): Usuario {
+        usuarioRepository.findById(usuario.id) ?: throw UsuarioNaoEncontradoException(usuario.id)
+        usuarioRepository.update(usuario.toUsuario(usuario.id))
+        return findById(usuario.id)
     }
 
     fun delete(usuarioId: UUID){
         usuarioRepository.findById(usuarioId = usuarioId) ?: throw UsuarioNaoEncontradoException(usuarioId)
         usuarioRepository.delete(usuarioId)
     }
-
-
 }

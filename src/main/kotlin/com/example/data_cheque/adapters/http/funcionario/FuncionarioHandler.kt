@@ -21,13 +21,13 @@ class FuncionarioHandler(
         return ResponseEntity.ok(funcionario)
     }
 
-    fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): ResponseEntity<Funcionario>{
-        val funcionario = funcionarioService.insert(funcionarioCreateCommand)
+    fun insert(funcionarioCommand: FuncionarioCommand): ResponseEntity<Funcionario>{
+        val funcionario = funcionarioService.insert(funcionarioCommand)
         return ResponseEntity.status(HttpStatus.CREATED).body(funcionario)
     }
 
-    fun update(funcionarioUpdateCommand: FuncionarioUpdateCommand, funcionarioId: String): ResponseEntity<FuncionarioCommandResponse>{
-        val funcionario = funcionarioService.update(funcionarioUpdateCommand, UUID.fromString(funcionarioId))
+    fun update(funcionarioCommand: FuncionarioCommand, funcionarioId: String): ResponseEntity<FuncionarioCommandResponse>{
+        val funcionario = funcionarioService.update(funcionarioCommand, UUID.fromString(funcionarioId))
         return ResponseEntity.ok(funcionario)
     }
 

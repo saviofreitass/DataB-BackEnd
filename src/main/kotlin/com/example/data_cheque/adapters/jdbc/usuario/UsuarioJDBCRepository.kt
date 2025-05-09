@@ -1,6 +1,7 @@
 package com.example.data_cheque.adapters.jdbc.usuario
 
 import com.example.data_cheque.adapters.ecrypt.PasswordBcryptEncoder
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.findByEmail
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlDeleteUsuarioById
 import com.example.data_cheque.adapters.jdbc.usuario.UsuarioSQLExpressions.sqlInsertUsuario
@@ -120,7 +121,8 @@ class UsuarioJDBCRepository (
 
         params.addValue("email", usuario.email)
 
-        params.addValue("senha_hash", usuario.senha)
+        val senhaHasheada = passwordBcryptEncoder.encode(usuario.senha)
+        params.addValue("senha_hash", senhaHasheada)
 
         params.addValue("tipo_usuario", usuario.tipoUsuario.toString())
 
