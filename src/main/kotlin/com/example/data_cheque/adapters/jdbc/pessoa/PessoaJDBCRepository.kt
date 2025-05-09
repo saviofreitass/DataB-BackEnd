@@ -83,7 +83,7 @@ class PessoaJDBCRepository (private val db: NamedParameterJdbcOperations) : Pess
             cpfcnpj = rs.getString("cpfcnpj"),
             telefone = rs.getString("telefone"),
             ativo = rs.getString("ativo").toBoolean(),
-            usuarioId = UUID.fromString(rs.getString("usuarioId"))
+            usuarioId = UUID.fromString(rs.getString("usuario_id"))
         )
 
     }

@@ -11,23 +11,26 @@ import java.util.UUID
 class FuncionarioHandler(
     private val funcionarioService: FuncionarioService,
 ) {
-    fun findAll(): ResponseEntity<List<FuncionarioCommandResponse>> {
+    fun findAll(): ResponseEntity<List<Funcionario>> {
         val funcionario = funcionarioService.findAll()
         return ResponseEntity.ok(funcionario)
     }
 
-    fun findById(funcionarioId: String): ResponseEntity<FuncionarioCommandResponse> {
+    fun findById(funcionarioId: String): ResponseEntity<Funcionario> {
         val funcionario = funcionarioService.findById(UUID.fromString(funcionarioId))
         return ResponseEntity.ok(funcionario)
     }
 
-    fun insert(funcionarioCommand: FuncionarioCommand): ResponseEntity<Funcionario>{
-        val funcionario = funcionarioService.insert(funcionarioCommand)
-        return ResponseEntity.status(HttpStatus.CREATED).body(funcionario)
+    fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): ResponseEntity<Funcionario>{
+        val novoFuncionario = funcionarioService.insert(funcionarioCreateCommand)
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncionario)
     }
 
-    fun update(funcionarioCommand: FuncionarioCommand, funcionarioId: String): ResponseEntity<FuncionarioCommandResponse>{
-        val funcionario = funcionarioService.update(funcionarioCommand, UUID.fromString(funcionarioId))
+    fun update(
+        funcionarioUpdateCommand: FuncionarioUpdateCommand,
+        funcionarioId: String
+    ): ResponseEntity<Funcionario>{
+        val funcionario = funcionarioService.update(funcionarioUpdateCommand, UUID.fromString(funcionarioId))
         return ResponseEntity.ok(funcionario)
     }
 

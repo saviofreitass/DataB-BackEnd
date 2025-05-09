@@ -1,7 +1,8 @@
 package com.example.data_cheque.adapters.http.funcionario
 
-import com.example.data_cheque.application.funcionario.FuncionarioCommand
 import com.example.data_cheque.application.funcionario.FuncionarioCommandResponse
+import com.example.data_cheque.application.funcionario.FuncionarioCreateCommand
+import com.example.data_cheque.application.funcionario.FuncionarioUpdateCommand
 import com.example.data_cheque.application.pessoa.PessoaService
 import com.example.data_cheque.domain.funcionario.Funcionario
 import org.springframework.http.ResponseEntity
@@ -13,24 +14,24 @@ private const val UUID_REGEX = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}
 @CrossOrigin(origins = arrayOf("*"))
 class FuncionarioController(private val funcionarioHandler: FuncionarioHandler) {
     @GetMapping("/funcionario")
-    fun findAll(): ResponseEntity<List<FuncionarioCommandResponse>> {
+    fun findAll(): ResponseEntity<List<Funcionario>> {
         return funcionarioHandler.findAll()
     }
 
     @GetMapping("/funcionario/{funcionarioId:$UUID_REGEX}")
-    fun findById(@PathVariable funcionarioId: String) : ResponseEntity<FuncionarioCommandResponse> {
+    fun findById(@PathVariable funcionarioId: String) : ResponseEntity<Funcionario> {
         return funcionarioHandler.findById(funcionarioId)
     }
 
     @PostMapping("/funcionario/cadastro")
-    fun insert(@RequestBody funcionario: FuncionarioCommand): ResponseEntity<Funcionario>{
-        return funcionarioHandler.insert(funcionario)
+    fun insert(@RequestBody funcionarioCreateCommand: FuncionarioCreateCommand): ResponseEntity<Funcionario>{
+        return funcionarioHandler.insert(funcionarioCreateCommand)
     }
 
     @PutMapping("/funcionario/{funcionarioId:$UUID_REGEX}")
-    fun update(@RequestBody funcionario: FuncionarioCommand,
-               @PathVariable funcionarioId: String): ResponseEntity<FuncionarioCommandResponse> {
-        return funcionarioHandler.update(funcionario, funcionarioId)
+    fun update(@RequestBody funcionarioUpdateCommand: FuncionarioUpdateCommand,
+               @PathVariable funcionarioId: String): ResponseEntity<Funcionario> {
+        return funcionarioHandler.update(funcionarioUpdateCommand, funcionarioId)
     }
 
     @DeleteMapping("/funcionarios/{funcionarioId:$UUID_REGEX}")

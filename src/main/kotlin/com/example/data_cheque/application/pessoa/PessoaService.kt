@@ -23,10 +23,10 @@ class PessoaService(private val pessoaRepository: PessoaRepository){
         return findById(pessoaDomain.id)
     }
 
-    fun update(pessoaUpdateCommand: PessoaUpdateCommand): Pessoa {
-        pessoaRepository.findById(pessoaUpdateCommand.id) ?: throw PessoaNaoEncontradaException(pessoaUpdateCommand.id)
-        pessoaRepository.update(pessoaUpdateCommand.toPessoa(pessoaUpdateCommand.id))
-        return findById(pessoaUpdateCommand.id)
+    fun update(pessoaUpdateCommand: PessoaUpdateCommand, id: UUID): Pessoa {
+        val pessoaEncontrada = pessoaRepository.findById(id) ?: throw PessoaNaoEncontradaException(id)
+        pessoaRepository.update(pessoaUpdateCommand.toPessoaAtualizada(pessoaEncontrada))
+        return findById(id)
     }
 
     fun delete(pessoaId: UUID){

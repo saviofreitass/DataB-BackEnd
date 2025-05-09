@@ -23,9 +23,9 @@ class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): F
         val LOGGER = KotlinLogging.logger { }
     }
 
-    override fun findAll(): List<FuncionarioCommandResponse> {
+    override fun findAll(): List<Funcionario> {
         val funcionario = try {
-            db.query(sqlSelectAll(), RowMapperResponse())
+            db.query(sqlSelectAll(), rowMapper())
         }catch (ex: Exception){
             LOGGER.error { "Houve um erro ao consultar os funcionarios: ${ex.message}" }
             throw ex
@@ -33,10 +33,10 @@ class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): F
         return funcionario
     }
 
-    override fun findById(funcionarioId: UUID): FuncionarioCommandResponse? {
+    override fun findById(funcionarioId: UUID): Funcionario? {
         val funcionario = try {
             val params = MapSqlParameterSource("id", funcionarioId)
-            db.query(sqlSelectById(), params, RowMapperResponse()).firstOrNull()
+            db.query(sqlSelectById(), params, rowMapper()).firstOrNull()
         }catch (ex: Exception){
             LOGGER.error { "Houve um erro ao consultar o funcionario: ${ex.message}" }
             throw ex
@@ -90,26 +90,26 @@ class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): F
         )
     }
 
-    private fun RowMapperResponse() = RowMapper<FuncionarioCommandResponse> { rs, _ ->
-        FuncionarioCommandResponse(
-            id = UUID.fromString(rs.getString("id")),
-            usuarioId = UUID.fromString(rs.getString("usuario_id")),
-            pessoaId = UUID.fromString(rs.getString("pessoa_id")),
-            dataAdmissao = rs.getTimestamp("data_admissao"),
-            salario = rs.getDouble("salario"),
-            cargo = rs.getString("cargo"),
-            setor = rs.getString("setor"),
-            nome = rs.getString("nome"),
-            cpfcnpj = rs.getString("cpfcnpj"),
-            telefone = rs.getString("telefone"),
-            ativo = rs.getBoolean("ativo"),
-            email = rs.getString("email"),
-            criadoEm = rs.getTimestamp("criado_em").toInstant().toKotlinInstant(),
-            usuarioCriacao = rs.getString("usuario_criacao"),
-            atualizadoEm = rs.getTimestamp("atualizado_em").toInstant().toKotlinInstant(),
-            usuarioAtualizacao = rs.getString("usuario_atualizacao")
-        )
-    }
+//    private fun RowMapperResponse() = RowMapper<FuncionarioCommandResponse> { rs, _ ->
+//        FuncionarioCommandResponse(
+//            id = UUID.fromString(rs.getString("id")),
+//            usuarioId = UUID.fromString(rs.getString("usuario_id")),
+//            pessoaId = UUID.fromString(rs.getString("pessoa_id")),
+//            dataAdmissao = rs.getTimestamp("data_admissao"),
+//            salario = rs.getDouble("salario"),
+//            cargo = rs.getString("cargo"),
+//            setor = rs.getString("setor"),
+//            nome = rs.getString("nome"),
+//            cpfcnpj = rs.getString("cpfcnpj"),
+//            telefone = rs.getString("telefone"),
+//            ativo = rs.getBoolean("ativo"),
+//            email = rs.getString("email"),
+//            criadoEm = rs.getTimestamp("criado_em").toInstant().toKotlinInstant(),
+//            usuarioCriacao = rs.getString("usuario_criacao"),
+//            atualizadoEm = rs.getTimestamp("atualizado_em").toInstant().toKotlinInstant(),
+//            usuarioAtualizacao = rs.getString("usuario_atualizacao")
+//        )
+//    }
 
     private fun parametros(funcionario: Funcionario): MapSqlParameterSource {
         val params = MapSqlParameterSource()

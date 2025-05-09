@@ -8,7 +8,8 @@ import java.util.*
 
 @Service
 class UsuarioService(
-    private val usuarioRepository: UsuarioRepository
+    private val usuarioRepository: UsuarioRepository,
+    private val encoderPassword: EncoderPassword
 ) {
     fun findAll(): List<Usuario> {
         return usuarioRepository.findAll()
@@ -21,16 +22,16 @@ class UsuarioService(
         return usuarioRepository.findByEmail(email)
     }
 
-    fun insert(usuarioCommand: UsuarioCommand): Usuario {
-        val usuarioDomain = usuarioCommand.toUsuario(usuarioCommand.id)
+    fun insert(usuarioCreateCommand: UsuarioCreateCommand): Usuario {
+        val usuarioDomain = usuarioCreateCommand.toUsuario(encoderPassword)
         usuarioRepository.insert(usuarioDomain)
         return findById(usuarioDomain.id)
     }
 
-    fun update(usuario: UsuarioCommand): Usuario {
-        usuarioRepository.findById(usuario.id) ?: throw UsuarioNaoEncontradoException(usuario.id)
-        usuarioRepository.update(usuario.toUsuario(usuario.id))
-        return findById(usuario.id)
+    fun update(usuarioUpdateCommand: UsuarioUpdateCommand, id: UUID): Usuario {
+        val usuarioEncontrado = usuarioRepository.findById(id) ?: throw UsuarioNaoEncontradoException(id)
+        usuarioRepository.update(usuarioUpdateCommand.toUsuarioAtualizado(usuarioEncontrado, encoderPassword))
+        return findById(id)
     }
 
     fun delete(usuarioId: UUID){

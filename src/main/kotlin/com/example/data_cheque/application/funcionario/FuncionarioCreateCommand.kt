@@ -9,11 +9,9 @@ import java.sql.Timestamp
 import java.util.*
 
 @Serializable
-data class FuncionarioCommand(
-    val id: @Contextual UUID?,
-//    val contadorId: UUID,
-    val pessoaId: UUID = UUID.randomUUID(),
-    val usuarioId: UUID = UUID.randomUUID(),
+data class FuncionarioCreateCommand(
+//    val pessoaId: UUID,
+//    val usuarioId: UUID,
     val nome: String,
     val cpfcnpj: String,
     val telefone: String,
@@ -23,18 +21,10 @@ data class FuncionarioCommand(
     val dataAdmissao: Timestamp,
     val email: String,
     val senha: String,
-    val criadoEm: Instant = Clock.System.now(),
-    val usuarioCriacao: String,
-    val atualizadoEm: Instant = Clock.System.now(),
-    val usuarioAtualizacao: String
 )
 
 @Serializable
 data class FuncionarioCommandResponse(
-    val id: @Contextual UUID?,
-//    val contadorId: UUID,
-    val pessoaId: UUID = UUID.randomUUID(),
-    val usuarioId: UUID = UUID.randomUUID(),
     val nome: String,
     val cpfcnpj: String,
     val telefone: String,
@@ -43,20 +33,15 @@ data class FuncionarioCommandResponse(
     val salario: Double,
     val dataAdmissao: Timestamp,
     val email: String,
-    val criadoEm: Instant = Clock.System.now(),
-    val usuarioCriacao: String,
-    val atualizadoEm: Instant = Clock.System.now(),
-    val usuarioAtualizacao: String,
     val ativo: Boolean
 )
 
-fun FuncionarioCommand.toFuncionario(id: UUID) = Funcionario(
-    id = id,
-//    contadorId = contadorId,
+fun FuncionarioCreateCommand.toFuncionario(usuarioId: UUID, pessoaId: UUID) = Funcionario(
+    id = UUID.randomUUID(),
     usuarioId = usuarioId,
+    pessoaId = pessoaId,
     cargo = cargo,
     setor = setor,
     salario = salario,
-    dataAdmissao = dataAdmissao,
-    pessoaId = pessoaId
+    dataAdmissao = dataAdmissao
 )

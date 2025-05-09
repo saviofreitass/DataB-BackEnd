@@ -1,105 +1,80 @@
 package com.example.data_cheque.application.funcionario
 
+import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoCadastrado
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoEncontradoException
+import com.example.data_cheque.application.pessoa.PessoaCreateCommand
+import com.example.data_cheque.application.pessoa.PessoaService
+import com.example.data_cheque.application.pessoa.PessoaUpdateCommand
+import com.example.data_cheque.application.usuario.UsuarioCreateCommand
+import com.example.data_cheque.application.usuario.UsuarioService
+import com.example.data_cheque.application.usuario.UsuarioUpdateCommand
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
-import com.example.data_cheque.domain.pessoa.Pessoa
-import com.example.data_cheque.domain.pessoa.PessoaRepository
 import com.example.data_cheque.domain.usuario.Role
-import com.example.data_cheque.domain.usuario.Usuario
-import com.example.data_cheque.domain.usuario.UsuarioRepository
-import kotlinx.datetime.Clock
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class FuncionarioService (
     private val funcionarioRepository: FuncionarioRepository,
-    private val usuarioRepository: UsuarioRepository,
-    private val pessoaRepository: PessoaRepository
+    private val usuarioService: UsuarioService,
+    private val pessoaService: PessoaService
 ) {
-    fun findAll(): List<FuncionarioCommandResponse> {
+    fun findAll(): List<Funcionario> {
         return funcionarioRepository.findAll()
     }
-    fun findById(funcionarioId: UUID): FuncionarioCommandResponse {
+    fun findById(funcionarioId: UUID): Funcionario {
         return funcionarioRepository.findById(funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
     }
 
-    fun insert(funcionario: FuncionarioCommand): Funcionario {
+    fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): Funcionario? {
+        //adicionar o try/catch
+        try{
+            val usuarioCreateCommand = UsuarioCreateCommand(
+                email = funcionarioCreateCommand.email,
+                senha = funcionarioCreateCommand.senha,
+                tipoUsuario = Role.ROLE_FUNCIONARIO,
+                atualizadoEm = null
+            )
+            //implementar o strategy
+            val novoUsuario = usuarioService.insert(usuarioCreateCommand)
 
-        val novoUsuario = Usuario(
-            id = funcionario.usuarioId,
-            email = funcionario.email,
-            senha = funcionario.senha,
-            tipoUsuario = Role.ROLE_FUNCIONARIO,
-            criadoEm = funcionario.criadoEm,
-            usuarioCriacao = funcionario.usuarioCriacao,
-            atualizadoEm = funcionario.atualizadoEm,
-            usuarioAtualizacao = funcionario.usuarioAtualizacao
-        )
-        usuarioRepository.insert(novoUsuario)
+            val pessoaCreateCommand = PessoaCreateCommand(
+                usuarioId = novoUsuario.id,
+                nome = funcionarioCreateCommand.nome,
+                cpfcnpj = funcionarioCreateCommand.cpfcnpj,
+                telefone = funcionarioCreateCommand.telefone,
+                ativo = true
+            )
+            val novaPessoa = pessoaService.insert(pessoaCreateCommand)
 
-        val novaPessoa = Pessoa(
-            id = funcionario.pessoaId,
-            usuarioId = novoUsuario.id,
-            nome = funcionario.nome,
-            cpfcnpj = funcionario.cpfcnpj,
-            telefone = funcionario.telefone,
-            ativo = true
-        )
-        pessoaRepository.insert(novaPessoa)
-
-        val novoFuncionario = Funcionario(
-            id = UUID.randomUUID(),
-            usuarioId = novoUsuario.id,
-            pessoaId = novaPessoa.id,
-//            empregadorId = request.empregadorId,
-//            contadorId = request.contadorId,
-            cargo = funcionario.cargo,
-            setor = funcionario.setor,
-            salario = funcionario.salario,
-            dataAdmissao = funcionario.dataAdmissao
-        )
-        funcionarioRepository.insert(novoFuncionario)
-        return novoFuncionario
+            val novoFuncionario = funcionarioCreateCommand.toFuncionario(novoUsuario.id, novaPessoa.id)
+            funcionarioRepository.insert(novoFuncionario)
+            return funcionarioRepository.findById(novoFuncionario.id)
+        }catch (e: FuncionarioNaoCadastrado){
+            throw e
+        }
     }
 
-    fun update(funcionario: FuncionarioCommand, funcionarioId: UUID): FuncionarioCommandResponse {
-        val usuarioUpdate = Usuario(
-            id = UUID.randomUUID(),
-            email = funcionario.email,
-            senha = funcionario.senha,
-            tipoUsuario = Role.ROLE_FUNCIONARIO,
-            criadoEm = Clock.System.now(),
-            usuarioCriacao = "sistema",
-            atualizadoEm = null,
-            usuarioAtualizacao = null
+    fun update(funcionarioUpdateCommand: FuncionarioUpdateCommand, funcionarioId: UUID): Funcionario {
+        val usuarioUpdateCommand = UsuarioUpdateCommand(
+            email = funcionarioUpdateCommand.email,
+            senha = funcionarioUpdateCommand.senha
         )
-        usuarioRepository.update(usuarioUpdate)
+        val usuarioAtualizado = usuarioService.update(usuarioUpdateCommand, funcionarioUpdateCommand.usuarioId)
 
-        val pessoaUpdate = Pessoa(
-            id = UUID.randomUUID(),
-            usuarioId = usuarioUpdate.id,
-            nome = funcionario.nome,
-            cpfcnpj = funcionario.cpfcnpj,
-            telefone = funcionario.telefone,
+        val pessoaUpdateCommand = PessoaUpdateCommand(
+            nome = funcionarioUpdateCommand.nome,
+            cpfcnpj = funcionarioUpdateCommand.cpfcnpj,
+            telefone = funcionarioUpdateCommand.telefone,
             ativo = true
         )
-        pessoaRepository.update(pessoaUpdate)
+        val pessoaAtualizada = pessoaService.update(pessoaUpdateCommand, funcionarioUpdateCommand.pessoaId)
 
-        val novoFuncionario = Funcionario(
-            id = UUID.randomUUID(),
-            usuarioId = usuarioUpdate.id,
-            pessoaId = pessoaUpdate.id,
-//            empregadorId = request.empregadorId,
-//            contadorId = request.contadorId,
-            cargo = funcionario.cargo,
-            setor = funcionario.setor,
-            salario = funcionario.salario,
-            dataAdmissao = funcionario.dataAdmissao
-        )
-        funcionarioRepository.update(novoFuncionario)
-        return findById(funcionarioId = funcionarioId)
+        val funcionarioEncontrado = funcionarioRepository.findById(funcionarioId)
+        funcionarioEncontrado?.let { funcionarioUpdateCommand.toFuncionarioAtualizado(it) }
+            ?.let { funcionarioRepository.update(it) }
+        return findById(funcionarioId)
     }
 
     fun delete(funcionarioId: UUID){

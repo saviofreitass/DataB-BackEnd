@@ -109,7 +109,7 @@ class UsuarioJDBCRepository (
             tipoUsuario = Role.valueOf(rs.getString("tipo_usuario")),
             criadoEm = rs.getTimestamp("criado_em").toInstant().toKotlinInstant(),
             usuarioCriacao = rs.getString("usuario_criacao"),
-            atualizadoEm = rs.getTimestamp("atualizado_em").toInstant().toKotlinInstant(),
+            atualizadoEm = rs.getTimestamp("atualizado_em")?.toInstant()?.toKotlinInstant(),
             usuarioAtualizacao = rs.getString("usuario_atualizacao")
         )
     }
@@ -121,14 +121,13 @@ class UsuarioJDBCRepository (
 
         params.addValue("email", usuario.email)
 
-        val senhaHasheada = passwordBcryptEncoder.encode(usuario.senha)
-        params.addValue("senha_hash", senhaHasheada)
+        params.addValue("senha_hash", usuario.senha)
 
         params.addValue("tipo_usuario", usuario.tipoUsuario.toString())
 
         params.addValue("criado_em", Timestamp.from(usuario.criadoEm.toJavaInstant()))
 
-        params.addValue("atualizado_em", Timestamp.from(usuario.atualizadoEm?.toJavaInstant()))
+        params.addValue("atualizado_em", usuario.atualizadoEm?.let { Timestamp.from(it.toJavaInstant()) })
 
         params.addValue("usuario_atualizacao", usuario.usuarioAtualizacao)
 

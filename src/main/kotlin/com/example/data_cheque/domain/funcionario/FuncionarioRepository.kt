@@ -4,9 +4,9 @@ import com.example.data_cheque.application.funcionario.FuncionarioCommandRespons
 import java.util.*
 
 interface FuncionarioRepository {
-    fun findAll(): List<FuncionarioCommandResponse>
+    fun findAll(): List<Funcionario>
 
-    fun findById(funcionarioId: UUID): FuncionarioCommandResponse?
+    fun findById(funcionarioId: UUID): Funcionario?
 
     fun insert(funcionario: Funcionario): Boolean
 
