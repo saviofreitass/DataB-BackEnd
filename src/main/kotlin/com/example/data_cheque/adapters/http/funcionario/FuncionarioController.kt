@@ -1,9 +1,7 @@
 package com.example.data_cheque.adapters.http.funcionario
 
-import com.example.data_cheque.application.funcionario.FuncionarioCommandResponse
 import com.example.data_cheque.application.funcionario.FuncionarioCreateCommand
 import com.example.data_cheque.application.funcionario.FuncionarioUpdateCommand
-import com.example.data_cheque.application.pessoa.PessoaService
 import com.example.data_cheque.domain.funcionario.Funcionario
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

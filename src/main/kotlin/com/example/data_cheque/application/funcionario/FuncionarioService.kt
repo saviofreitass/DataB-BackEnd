@@ -46,7 +46,7 @@ class FuncionarioService (
             )
             val novaPessoa = pessoaService.insert(pessoaCreateCommand)
 
-            val novoFuncionario = funcionarioCreateCommand.toFuncionario(novoUsuario.id, novaPessoa.id)
+            val novoFuncionario = funcionarioCreateCommand.toFuncionario( novaPessoa.id, novoUsuario.id)
             funcionarioRepository.insert(novoFuncionario)
             return funcionarioRepository.findById(novoFuncionario.id)
         }catch (e: FuncionarioNaoCadastrado){
