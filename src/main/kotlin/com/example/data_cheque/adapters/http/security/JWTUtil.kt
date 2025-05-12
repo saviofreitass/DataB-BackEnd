@@ -28,6 +28,7 @@ class JWTUtil (
             .subject(usuario.id.toString())
             .subject(usuario.tipoUsuario.toString())
             .subject((usuario.email))
+            .claim("tipo", usuario.tipoUsuario.toString())
             .expiration(Date(System.currentTimeMillis() + expiration))
             .signWith(getSecretKey(), SIG.HS512)
             .compact()

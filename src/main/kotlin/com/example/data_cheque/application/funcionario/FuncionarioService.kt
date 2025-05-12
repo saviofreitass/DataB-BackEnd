@@ -28,7 +28,6 @@ class FuncionarioService (
     }
 
     fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): Funcionario? {
-        //adicionar o try/catch
         try{
             val usuarioCreateCommand = UsuarioCreateCommand(
                 email = funcionarioCreateCommand.email,
@@ -36,7 +35,6 @@ class FuncionarioService (
                 tipoUsuario = Role.ROLE_FUNCIONARIO,
                 atualizadoEm = null
             )
-            //implementar o strategy
             val novoUsuario = usuarioService.insert(usuarioCreateCommand)
 
             val pessoaCreateCommand = PessoaCreateCommand(
@@ -58,6 +56,7 @@ class FuncionarioService (
 
     fun update(funcionarioUpdateCommand: FuncionarioUpdateCommand, funcionarioId: UUID): Funcionario {
         val usuarioUpdateCommand = UsuarioUpdateCommand(
+            id = funcionarioUpdateCommand.usuarioId,
             email = funcionarioUpdateCommand.email,
             senha = funcionarioUpdateCommand.senha
         )
