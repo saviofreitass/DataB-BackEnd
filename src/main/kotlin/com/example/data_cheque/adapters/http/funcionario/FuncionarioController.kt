@@ -10,7 +10,9 @@ private const val UUID_REGEX = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}
 
 @RestController
 @CrossOrigin(origins = arrayOf("*"))
-class FuncionarioController(private val funcionarioHandler: FuncionarioHandler) {
+class FuncionarioController(
+    private val funcionarioHandler: FuncionarioHandler
+) {
     @GetMapping("/funcionario")
     fun findAll(): ResponseEntity<List<Funcionario>> {
         return funcionarioHandler.findAll()
@@ -32,7 +34,7 @@ class FuncionarioController(private val funcionarioHandler: FuncionarioHandler) 
         return funcionarioHandler.update(funcionarioUpdateCommand, funcionarioId)
     }
 
-    @DeleteMapping("/funcionarios/{funcionarioId:$UUID_REGEX}")
+    @DeleteMapping("/funcionario/{funcionarioId:$UUID_REGEX}")
     fun delete(@PathVariable funcionarioId: String): ResponseEntity<String> {
         return funcionarioHandler.delete(funcionarioId)
     }

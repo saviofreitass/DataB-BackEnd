@@ -77,7 +77,10 @@ class FuncionarioService (
     }
 
     fun delete(funcionarioId: UUID){
-        funcionarioRepository.findById(funcionarioId = funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
-        funcionarioRepository.delete(funcionarioId)
+        val funcionario = funcionarioRepository.findById(funcionarioId)?: throw FuncionarioNaoEncontradoException(funcionarioId)
+        usuarioService.delete(funcionario.usuarioId)
+
+//        funcionarioRepository.findById(funcionarioId = funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
+//        funcionarioRepository.delete(funcionarioId)
     }
 }

@@ -9,7 +9,7 @@ object FuncionarioSQLExpressions {
         cargo,
         setor,
         data_admissao,
-        salario,
+        salario
     FROM funcionarios 
     """.trimIndent()
 

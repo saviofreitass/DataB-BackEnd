@@ -1,6 +1,11 @@
 package com.example.data_cheque.adapters.http.error
 
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoEncontradoException
+import com.example.data_cheque.application.pessoa.exception.PessoaNaoEncontradaException
+import com.example.data_cheque.application.usuario.exception.EmailExistenteException
+import com.example.data_cheque.application.usuario.exception.EmailInvalidoException
+import com.example.data_cheque.application.usuario.exception.SenhaInvalida
+import com.example.data_cheque.application.usuario.exception.UsuarioNaoEncontradoException
 import mu.KotlinLogging
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -30,6 +35,23 @@ private fun Throwable.toResponse(): Pair<HttpStatus, ErrorResponse> =
 //            id = this.contadorId,
 //            statusCode = HttpStatus.NOT_FOUND
 //        )
+        is PessoaNaoEncontradaException -> toResponse(
+            id = this.pessoaId,
+            statusCode = HttpStatus.NOT_FOUND
+        )
+        is UsuarioNaoEncontradoException -> toResponse(
+            id = this.usuarioId,
+            statusCode = HttpStatus.NOT_FOUND
+        )
+        is SenhaInvalida -> toResponse(
+            statusCode = HttpStatus.BAD_REQUEST
+        )
+        is EmailInvalidoException -> toResponse(
+            statusCode = HttpStatus.BAD_REQUEST
+        )
+        is EmailExistenteException -> toResponse(
+            statusCode = HttpStatus.BAD_REQUEST
+        )
         else ->  {
             toResponse(
                 statusCode = HttpStatus.BAD_REQUEST

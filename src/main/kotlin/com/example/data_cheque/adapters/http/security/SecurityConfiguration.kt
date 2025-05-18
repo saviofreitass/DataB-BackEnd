@@ -23,6 +23,10 @@ class SecurityConfiguration (
             it.requestMatchers("/funcionario/cadastro").permitAll()
             it.requestMatchers("/funcionario/{funcionarioId}").permitAll()
             it.requestMatchers("/funcionario").permitAll()
+            it.requestMatchers("/usuario").permitAll()
+            it.requestMatchers("/usuario/{usuarioId}").permitAll()
+            it.requestMatchers("/pessoa").permitAll()
+            it.requestMatchers("/pessoa/{pessoaId}").permitAll()
             it.anyRequest().authenticated()
         }.csrf {
             it.disable()
