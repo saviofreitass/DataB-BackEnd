@@ -50,4 +50,3 @@ flyway{
 	password = "123456"
 	schemas = arrayOf("data_cheque")
 }
-

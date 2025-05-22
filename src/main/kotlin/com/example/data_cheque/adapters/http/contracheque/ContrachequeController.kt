@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 private const val UUID_REGEX = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}"
 
-@CrossOrigin(origins = arrayOf("*"))
+@CrossOrigin(origins = ["*"])
 @RestController
 class ContrachequeController(
     private val contrachequeHandler: ContrachequeHandler
