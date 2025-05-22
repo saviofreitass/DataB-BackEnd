@@ -45,7 +45,7 @@ tasks.withType<Test> {
 flyway{
 	url = "jdbc:postgresql://localhost:5432/data_cheque"
 	user = "postgres"
-	password = "12345"
+	password = "123456"
 	schemas = arrayOf("data_cheque")
 }
 
