@@ -51,8 +51,10 @@ object FuncionarioSQLExpressions {
             p.telefone,
             p.ativo,
             u.email,
+            u.senha_hash,
             u.criado_em,
             u.usuario_criacao,
+            u.tipo_usuario,
             u.atualizado_em,
             u.usuario_atualizacao
         FROM funcionarios f

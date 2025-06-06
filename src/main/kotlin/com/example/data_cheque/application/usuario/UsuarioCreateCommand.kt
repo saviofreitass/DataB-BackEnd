@@ -15,7 +15,7 @@ data class UsuarioCreateCommand(
     val email: String,
     val senha: String,
     val tipoUsuario: Role,
-    val atualizadoEm: Instant? = null
+    val usuarioCriacao: String
 )
 
 fun UsuarioCreateCommand.toUsuario(encoderPassword: EncoderPassword) = Usuario(
@@ -23,7 +23,7 @@ fun UsuarioCreateCommand.toUsuario(encoderPassword: EncoderPassword) = Usuario(
     email = email,
     senha = encoderPassword.encode(senha),
     tipoUsuario = tipoUsuario,
-    usuarioCriacao = "adm",
+    usuarioCriacao = usuarioCriacao,
     criadoEm = Clock.System.now(),
     atualizadoEm = null,
     usuarioAtualizacao = null

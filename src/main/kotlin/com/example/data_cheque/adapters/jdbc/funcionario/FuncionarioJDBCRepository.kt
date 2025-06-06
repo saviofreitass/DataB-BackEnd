@@ -7,6 +7,14 @@ import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressio
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectById
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
+import com.example.data_cheque.domain.pessoa.Pessoa
+import com.example.data_cheque.domain.pessoa.PessoaRepository
+import com.example.data_cheque.domain.usuario.Role
+import com.example.data_cheque.domain.usuario.Usuario
+import com.example.data_cheque.domain.usuario.UsuarioRepository
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toKotlinInstant
+import kotlinx.datetime.toLocalDate
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.stereotype.Repository
 import mu.KotlinLogging
@@ -16,7 +24,11 @@ import java.util.*
 
 
 @Repository
-class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): FuncionarioRepository {
+class FuncionarioJDBCRepository(
+    private val db: NamedParameterJdbcOperations,
+    private val usuarioRepository: UsuarioRepository,
+    private val pessoaRepository: PessoaRepository
+): FuncionarioRepository {
     private companion object{
         val LOGGER = KotlinLogging.logger { }
     }
@@ -77,10 +89,30 @@ class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): F
 
     private fun rowMapper() = RowMapper<Funcionario> { rs, _ ->
         val funcionarioId = UUID.fromString(rs.getString("id"))
+
+        val usuario = Usuario(
+            id = UUID.fromString(rs.getString("usuario_id")),
+            email = rs.getString("email"),
+            senha = rs.getString("senha_hash"),
+            tipoUsuario = Role.valueOf(rs.getString("tipo_usuario")),
+            usuarioCriacao = rs.getString("usuario_criacao"),
+            criadoEm = rs.getTimestamp("criado_em").toInstant().toKotlinInstant(),
+            atualizadoEm = rs.getTimestamp("atualizado_em")?.toInstant()?.toKotlinInstant(),
+            usuarioAtualizacao = rs.getString("usuario_atualizacao")
+        )
+
+        val pessoa = Pessoa(
+            id = UUID.fromString(rs.getString("pessoa_id")),
+            nome = rs.getString("nome"),
+            cpfcnpj = rs.getString("cpfcnpj"),
+            telefone = rs.getString("telefone"),
+            ativo = rs.getBoolean("ativo")
+        )
+
         Funcionario(
             id = funcionarioId,
-            usuarioId = UUID.fromString(rs.getString("usuario_id")),
-            pessoaId = UUID.fromString(rs.getString("pessoa_id")),
+            usuario = usuario,
+            pessoa = pessoa,
             cargo = rs.getString("cargo"),
             setor = rs.getString("setor"),
             salario = rs.getDouble("salario"),
@@ -112,8 +144,8 @@ class FuncionarioJDBCRepository(private val db: NamedParameterJdbcOperations): F
     private fun parametros(funcionario: Funcionario): MapSqlParameterSource {
         val params = MapSqlParameterSource()
         params.addValue("id", funcionario.id)
-        params.addValue("usuario_id", funcionario.usuarioId)
-        params.addValue("pessoa_id", funcionario.pessoaId)
+        params.addValue("usuario_id", funcionario.usuario.id)
+        params.addValue("pessoa_id", funcionario.pessoa.id)
         params.addValue("cargo", funcionario.cargo)
         params.addValue("setor", funcionario.setor)
         params.addValue("salario", funcionario.salario)

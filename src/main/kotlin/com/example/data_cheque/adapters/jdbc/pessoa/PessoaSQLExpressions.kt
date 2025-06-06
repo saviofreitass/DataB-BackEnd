@@ -4,7 +4,6 @@ object PessoaSQLExpressions {
     fun sqlSelectAll() = """
         SELECT 
             id,
-            usuario_id,
             nome,
             cpfcnpj,
             telefone,
@@ -15,7 +14,6 @@ object PessoaSQLExpressions {
     fun sqlSelectById() = """
         SELECT 
             id,
-            usuario_id,
             nome,
             cpfcnpj,
             telefone,
@@ -27,14 +25,12 @@ object PessoaSQLExpressions {
     fun sqlInsertPessoa() = """
         INSERT INTO pessoa(
             id,
-            usuario_id,
             nome,
             cpfcnpj,
             telefone,
             ativo      
         ) VALUES(
             :id,
-            :usuario_id,
             :nome,
             :cpfcnpj,
             :telefone,
@@ -45,7 +41,6 @@ object PessoaSQLExpressions {
     fun sqlUpdatePessoa() = """
         UPDATE pessoa
             set 
-                usuario_id = :usuario_id,
                 nome = :nome,
                 cpfcnpj = :cpfcnpj,
                 telefone  = :telefone,

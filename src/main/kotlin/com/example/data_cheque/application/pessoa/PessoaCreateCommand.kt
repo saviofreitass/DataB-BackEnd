@@ -6,7 +6,6 @@ import java.util.*
 
 @Serializable
 data class PessoaCreateCommand (
-    val usuarioId: UUID,
     val nome: String,
     val cpfcnpj: String,
     val telefone: String,
@@ -15,7 +14,6 @@ data class PessoaCreateCommand (
 
 fun PessoaCreateCommand.toPessoa() = Pessoa(
     id = UUID.randomUUID(),
-    usuarioId = usuarioId,
     nome = nome,
     cpfcnpj = cpfcnpj,
     telefone = telefone,

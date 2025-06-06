@@ -17,7 +17,6 @@ fun UsuarioUpdateCommand.toUsuarioAtualizado(
     encoderPassword: EncoderPassword
 ): Usuario {
     return usuario.copy(
-        id = id,
         email = email ?: usuario.email,
         senha = senha?.let { encoderPassword.encode(it) } ?: usuario.senha,
         atualizadoEm = Clock.System.now(),
