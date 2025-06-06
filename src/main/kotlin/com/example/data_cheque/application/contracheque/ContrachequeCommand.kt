@@ -20,10 +20,11 @@ data class ContrachequeCommand(
     val outrosDescontos: Double? = null,
 )
 
-fun ContrachequeCommand.toContracheque(id: UUID = UUID.randomUUID(), funcId: UUID): Contracheque {
+fun ContrachequeCommand.toContracheque(id: UUID = UUID.randomUUID(), funcId: UUID, contadorId: UUID): Contracheque {
     return Contracheque(
       id= id,
       funcId= funcId,
+      contadorId = contadorId,
       dataPagamento= dataPagamento,
       dataRefInicio= dataRefInicio,
       dataRefFim= dataRefFim,

@@ -3,7 +3,7 @@ package com.example.data_cheque.domain.contracheque
 import java.util.UUID
 
 interface ContraChequeRepository {
-    fun findAll(funcionarioId: UUID): List<Contracheque>
+    fun findAllByFuncionario(funcionarioId: UUID): List<Contracheque>
 
     fun findById(contrachequeId: UUID, funcionarioId: UUID): Contracheque?
 

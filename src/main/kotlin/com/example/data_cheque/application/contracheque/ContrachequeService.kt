@@ -10,8 +10,8 @@ import java.util.*
 class ContrachequeService(
     private val contrachequeRepository: ContraChequeRepository
 ) {
-    fun findAll(funcionarioId: UUID): List<Contracheque>{
-        return contrachequeRepository.findAll(funcionarioId)
+    fun findAllByFuncionario(funcionarioId: UUID): List<Contracheque>{
+        return contrachequeRepository.findAllByFuncionario(funcionarioId)
     }
 
     fun findById(
@@ -23,9 +23,10 @@ class ContrachequeService(
 
     fun inserir(
         contracheque: ContrachequeCommand,
-        funcionarioId: UUID)
+        funcionarioId: UUID,
+        contadorId: UUID)
     : Contracheque?{
-        val contrachequeDomain = contracheque.toContracheque(funcId = funcionarioId)
+        val contrachequeDomain = contracheque.toContracheque(funcId = funcionarioId, contadorId = contadorId)
         contrachequeRepository.inserir(contracheque = contrachequeDomain)
         return findById(contrachequeDomain.id , contrachequeDomain.funcId)
     }
@@ -33,12 +34,13 @@ class ContrachequeService(
     fun atualizar(
         contracheque: ContrachequeCommand,
         contrachequeId: UUID,
-        funcionarioId: UUID
+        funcionarioId: UUID,
+        contadorId: UUID
     ): Contracheque?{
         contrachequeRepository.findById(contrachequeId, funcionarioId)
 
         contrachequeRepository.atualizar(
-            contracheque.toContracheque(funcId = funcionarioId)
+            contracheque.toContracheque(funcId = funcionarioId, contadorId = contadorId)
                 .copy(
                     atualizadoEm = Clock.System.now(),
                     usuarioAtualizacao = "admin",

@@ -12,8 +12,8 @@ import java.util.UUID
 class ContrachequeHandler(
     private val contrachequeService: ContrachequeService
 ) {
-    fun findAll(funcionarioId: String): ResponseEntity<List<Contracheque>>{
-        val contracheques = contrachequeService.findAll(UUID.fromString(funcionarioId))
+    fun findAllByFuncionario(funcionarioId: String): ResponseEntity<List<Contracheque>>{
+        val contracheques = contrachequeService.findAllByFuncionario(UUID.fromString(funcionarioId))
         return ResponseEntity.ok(contracheques)
     }
 
@@ -26,9 +26,11 @@ class ContrachequeHandler(
 
     fun inserir(
         contrachequeCreateCommand: ContrachequeCommand,
-        funcionarioId: String)
+        funcionarioId: String,
+        contadorId: String)
     : ResponseEntity<Contracheque>{
-        val contracheque = contrachequeService.inserir(contrachequeCreateCommand, UUID.fromString(funcionarioId))
+        val contracheque = contrachequeService.inserir(contrachequeCreateCommand,
+            UUID.fromString(funcionarioId), UUID.fromString(contadorId))
         return ResponseEntity.status(HttpStatus.CREATED).body(contracheque)
     }
 
@@ -36,8 +38,10 @@ class ContrachequeHandler(
         contrachequeUpdateCommand: ContrachequeCommand,
         contrachequeId: String,
         funcionarioId: String,
+        contadorId: String
     ): ResponseEntity<Contracheque>{
-        val contracheque = contrachequeService.atualizar(contrachequeUpdateCommand, UUID.fromString(contrachequeId), UUID.fromString(funcionarioId))
+        val contracheque = contrachequeService.atualizar(contrachequeUpdateCommand, UUID.fromString(contrachequeId),
+            UUID.fromString(funcionarioId), UUID.fromString(contadorId))
         return ResponseEntity.status(HttpStatus.OK).body(contracheque)
     }
 

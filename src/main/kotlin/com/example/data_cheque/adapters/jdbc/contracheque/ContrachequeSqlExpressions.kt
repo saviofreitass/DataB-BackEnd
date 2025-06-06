@@ -4,7 +4,8 @@ object ContrachequeSqlExpressions {
     private fun campos() = 
         """
             id,
-            func_id,
+            funcionario_id,
+            contador_id,
             data_pagamento,
             data_ref_inicio,       
             data_ref_fim,         
@@ -26,21 +27,22 @@ object ContrachequeSqlExpressions {
         """
         SELECT ${campos()}
         from data_cheque.contracheque
-        WHERE func_id = :func_id
+        WHERE funcionario_id = :funcionario_id
         """.trimIndent()
 
     fun sqlSelectById() =
         """
         SELECT ${campos()}
         from data_cheque.contracheque
-        WHERE func_id = :func_id AND id = :id
+        WHERE funcionario_id = :funcionario_id AND id = :id
         """.trimIndent()
 
     fun sqlInsertContracheque() =
         """
         INSERT INTO data_cheque.contracheque(
             id,
-            func_id,
+            funcionario_id,
+            contador_id,
             data_pagamento,
             data_ref_inicio,       
             data_ref_fim,         
@@ -59,7 +61,8 @@ object ContrachequeSqlExpressions {
             usuario_atualizacao
         ) VALUES (
             :id,
-            :func_id,
+            :funcionario_id,
+            :contador_id,
             :data_pagamento,
             :data_ref_inicio,
             :data_ref_fim,         

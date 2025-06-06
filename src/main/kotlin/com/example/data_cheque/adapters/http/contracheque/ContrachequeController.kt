@@ -21,7 +21,7 @@ class ContrachequeController(
 ) {
     @GetMapping("/contracheques/{funcionarioId:$UUID_REGEX}")
     fun findAll(@PathVariable funcionarioId: String ): ResponseEntity<List<Contracheque>>{
-        return contrachequeHandler.findAll(funcionarioId)
+        return contrachequeHandler.findAllByFuncionario(funcionarioId)
     }
 
     @GetMapping("/contracheques/{funcionarioId:$UUID_REGEX}/{contrachequeId:$UUID_REGEX}")
@@ -35,18 +35,20 @@ class ContrachequeController(
     @PostMapping("/contracheques/{funcionarioId:$UUID_REGEX}")
     fun inserir(
         @RequestBody contracheque: ContrachequeCommand,
-        @PathVariable funcionarioId: String)
+        @PathVariable funcionarioId: String,
+        @PathVariable contadorId: String)
     : ResponseEntity<Contracheque>{
-        return contrachequeHandler.inserir(contracheque, funcionarioId)
+        return contrachequeHandler.inserir(contracheque, funcionarioId, contadorId)
     }
 
     @PutMapping("/contracheques/{funcionarioId:$UUID_REGEX}/{contrachequeId:$UUID_REGEX}")
     fun atualizar(
         @RequestBody contracheque: ContrachequeCommand,
         @PathVariable contrachequeId: String,
-        @PathVariable funcionarioId: String
+        @PathVariable funcionarioId: String,
+        @PathVariable contadorId: String
     ): ResponseEntity<Contracheque> {
-        return contrachequeHandler.atualizar(contracheque, contrachequeId, funcionarioId)
+        return contrachequeHandler.atualizar(contracheque, contrachequeId, funcionarioId, contadorId)
     }
 
     @DeleteMapping("/contracheques/{funcionarioId:$UUID_REGEX}/{contrachequeId:$UUID_REGEX}")

@@ -29,10 +29,10 @@ class ContrachequeJDBCRepository(
         val LOGGER = KotlinLogging.logger {}
     }
 
-    override fun findAll(funcionarioId: UUID): List<Contracheque> {
+    override fun findAllByFuncionario(funcionarioId: UUID): List<Contracheque> {
         val contracheques =
             try{
-                val params = MapSqlParameterSource("func_id", funcionarioId)
+                val params = MapSqlParameterSource("funcionario_id", funcionarioId)
                 db.query(sqlSelectAll(), params, rowMapper())
             } catch (ex: Exception) {
                 LOGGER.error{"Houve um erro ao consultar os contracheques: ${ex.message}"}
@@ -44,7 +44,7 @@ class ContrachequeJDBCRepository(
     override fun findById(contrachequeId: UUID , funcionarioId: UUID): Contracheque? {
         val contracheque =
             try{
-                val params = MapSqlParameterSource(mapOf("id" to contrachequeId , "func_id" to funcionarioId))
+                val params = MapSqlParameterSource(mapOf("id" to contrachequeId , "funcionario_id" to funcionarioId))
                 db.query(sqlSelectById(), params, rowMapper()).firstOrNull()
             } catch (ex: Exception) {
                 LOGGER.error { "Houve um erro ao consultar o contracheque : ${ex.message}" }
@@ -96,7 +96,8 @@ class ContrachequeJDBCRepository(
 
             Contracheque(
                 id = contrachequeId,
-                funcId = UUID.fromString(rs.getString("func_id")),
+                funcId = UUID.fromString(rs.getString("funcionario_id")),
+                contadorId = UUID.fromString(rs.getString("contador_id")),
                 dataPagamento = rs.getDate("data_pagamento").toLocalDate(),
                 dataRefInicio = rs.getDate("data_ref_inicio").toLocalDate(),
                 dataRefFim = rs.getDate("data_ref_fim").toLocalDate(),
@@ -129,7 +130,8 @@ class ContrachequeJDBCRepository(
     private fun parametros(contracheque: Contracheque): MapSqlParameterSource {
         val params = MapSqlParameterSource()
         params.addValue("id", contracheque.id)
-        params.addValue("func_id", contracheque.funcId)
+        params.addValue("funcionario_id", contracheque.funcId)
+        params.addValue("contador_id", contracheque.contadorId)
         params.addValue("data_pagamento", contracheque.dataPagamento)
         params.addValue("data_ref_inicio", contracheque.dataRefInicio)
         params.addValue("data_ref_fim", contracheque.dataRefFim)

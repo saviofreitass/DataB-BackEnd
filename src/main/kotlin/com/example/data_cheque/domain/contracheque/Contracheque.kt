@@ -7,6 +7,7 @@ import java.util.UUID
 data class Contracheque (
     val id: UUID,
     val funcId: UUID,
+    val contadorId: UUID,
     val dataPagamento: LocalDate,
     val dataRefInicio: LocalDate,
     val dataRefFim: LocalDate,
