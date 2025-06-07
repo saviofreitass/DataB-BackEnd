@@ -39,7 +39,6 @@ class FuncionarioService (
     }
 
     fun update(funcionarioUpdateCommand: FuncionarioUpdateCommand, funcionarioId: UUID): Funcionario {
-
         val funcionarioAtualizado = funcionarioUpdateCommand.usuario?.let { usuarioDto ->
             usuarioService.update(usuarioDto, usuarioDto.id)
         }
@@ -56,9 +55,10 @@ class FuncionarioService (
 
     fun delete(funcionarioId: UUID){
         val funcionario = funcionarioRepository.findById(funcionarioId)?: throw FuncionarioNaoEncontradoException(funcionarioId)
-        usuarioService.delete(funcionario.usuario.id)
-
-//        funcionarioRepository.findById(funcionarioId = funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
-//        funcionarioRepository.delete(funcionarioId)
+        val usuarioId = funcionario.usuario.id
+        val pessoaId = funcionario.pessoa.id
+        funcionarioRepository.delete(funcionarioId)
+        usuarioService.delete(usuarioId)
+        pessoaService.delete(pessoaId)
     }
 }

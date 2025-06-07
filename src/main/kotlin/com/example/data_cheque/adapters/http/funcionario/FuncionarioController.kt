@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 private const val UUID_REGEX = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}"
 
+
 @RestController
 @CrossOrigin(origins = arrayOf("*"))
 class FuncionarioController(

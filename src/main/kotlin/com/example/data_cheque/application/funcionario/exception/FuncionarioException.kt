@@ -8,7 +8,7 @@ sealed class FuncionarioException(mensagem: String): Exception(mensagem){
 
 data class FuncionarioNaoCadastrado(
     override val funcionarioId: UUID?
-): FuncionarioException("Erro ao cadastrar o usuário")
+): FuncionarioException("Erro ao cadastrar o funcionário")
 
 data class FuncionarioNaoEncontradoException(
     override val funcionarioId: UUID?

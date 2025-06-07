@@ -38,6 +38,4 @@ class FuncionarioHandler(
         funcionarioService.delete(funcionarioId = UUID.fromString(funcionarioId))
         return ResponseEntity.noContent().build()
     }
-
-
 }

@@ -21,12 +21,7 @@ class SecurityConfiguration (
             it.requestMatchers("/login").permitAll()
             it.requestMatchers("/users").permitAll()
             it.requestMatchers("/funcionario/cadastro").permitAll()
-            it.requestMatchers("/funcionario/{funcionarioId}").permitAll()
-            it.requestMatchers("/funcionario").permitAll()
-            it.requestMatchers("/usuario").permitAll()
-            it.requestMatchers("/usuario/{usuarioId}").permitAll()
-            it.requestMatchers("/pessoa").permitAll()
-            it.requestMatchers("/pessoa/{pessoaId}").permitAll()
+            it.requestMatchers("/contador/cadastro").permitAll()
             it.anyRequest().authenticated()
         }.csrf {
             it.disable()

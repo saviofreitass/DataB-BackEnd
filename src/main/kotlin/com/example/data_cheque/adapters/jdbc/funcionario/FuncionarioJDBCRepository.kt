@@ -8,13 +8,9 @@ import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressio
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
 import com.example.data_cheque.domain.pessoa.Pessoa
-import com.example.data_cheque.domain.pessoa.PessoaRepository
 import com.example.data_cheque.domain.usuario.Role
 import com.example.data_cheque.domain.usuario.Usuario
-import com.example.data_cheque.domain.usuario.UsuarioRepository
-import kotlinx.datetime.toInstant
 import kotlinx.datetime.toKotlinInstant
-import kotlinx.datetime.toLocalDate
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.stereotype.Repository
 import mu.KotlinLogging
@@ -26,8 +22,6 @@ import java.util.*
 @Repository
 class FuncionarioJDBCRepository(
     private val db: NamedParameterJdbcOperations,
-    private val usuarioRepository: UsuarioRepository,
-    private val pessoaRepository: PessoaRepository
 ): FuncionarioRepository {
     private companion object{
         val LOGGER = KotlinLogging.logger { }
@@ -119,27 +113,6 @@ class FuncionarioJDBCRepository(
             dataAdmissao = rs.getTimestamp("data_admissao")
         )
     }
-
-//    private fun RowMapperResponse() = RowMapper<FuncionarioCommandResponse> { rs, _ ->
-//        FuncionarioCommandResponse(
-//            id = UUID.fromString(rs.getString("id")),
-//            usuarioId = UUID.fromString(rs.getString("usuario_id")),
-//            pessoaId = UUID.fromString(rs.getString("pessoa_id")),
-//            dataAdmissao = rs.getTimestamp("data_admissao"),
-//            salario = rs.getDouble("salario"),
-//            cargo = rs.getString("cargo"),
-//            setor = rs.getString("setor"),
-//            nome = rs.getString("nome"),
-//            cpfcnpj = rs.getString("cpfcnpj"),
-//            telefone = rs.getString("telefone"),
-//            ativo = rs.getBoolean("ativo"),
-//            email = rs.getString("email"),
-//            criadoEm = rs.getTimestamp("criado_em").toInstant().toKotlinInstant(),
-//            usuarioCriacao = rs.getString("usuario_criacao"),
-//            atualizadoEm = rs.getTimestamp("atualizado_em").toInstant().toKotlinInstant(),
-//            usuarioAtualizacao = rs.getString("usuario_atualizacao")
-//        )
-//    }
 
     private fun parametros(funcionario: Funcionario): MapSqlParameterSource {
         val params = MapSqlParameterSource()

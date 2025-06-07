@@ -10,5 +10,6 @@ CREATE TABLE IF NOT EXISTS data_cheque.funcionarios (
     setor VARCHAR(100),
     data_admissao TIMESTAMP WITH TIME ZONE,
     salario NUMERIC(10, 2) NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES data_cheque.usuarios(id) ON DELETE CASCADE
+    FOREIGN KEY (usuario_id) REFERENCES data_cheque.usuarios(id),
+    FOREIGN KEY (pessoa_id) REFERENCES data_cheque.pessoa(id)
 );
