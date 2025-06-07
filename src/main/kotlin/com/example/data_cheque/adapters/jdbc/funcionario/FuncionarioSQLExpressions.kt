@@ -3,14 +3,22 @@ package com.example.data_cheque.adapters.jdbc.funcionario
 object FuncionarioSQLExpressions {
     fun sqlSelectAll() = """
     SELECT 
-        id,
-        usuario_id,
-        pessoa_id,
-        cargo,
-        setor,
-        data_admissao,
-        salario
-    FROM funcionarios 
+            f.id,
+            f.usuario_id,
+            f.pessoa_id,
+            f.cargo,
+            f.setor,
+            f.data_admissao,
+            f.salario,
+            p.nome,
+            p.cpfcnpj,
+            p.telefone,
+            p.ativo,
+            u.email,
+            u.tipo_usuario,
+        FROM funcionarios f
+        JOIN pessoa p ON f.pessoa_id = p.id
+        JOIN usuarios u ON f.usuario_id = u.id
     """.trimIndent()
 
 //    fun sqlSelectById() = """

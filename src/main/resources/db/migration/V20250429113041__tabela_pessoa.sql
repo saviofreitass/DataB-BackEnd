@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS data_cheque.pessoa(
     cpfcnpj VARCHAR(14) NOT NULL,
     telefone VARCHAR(11),
     ativo BOOLEAN NOT NULL,
+    usuario_id UUID,
     FOREIGN KEY (usuario_id) REFERENCES data_cheque.usuarios(id) ON DELETE CASCADE
 )

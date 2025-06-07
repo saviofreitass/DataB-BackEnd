@@ -93,7 +93,7 @@ class FuncionarioJDBCRepository(
         val usuario = Usuario(
             id = UUID.fromString(rs.getString("usuario_id")),
             email = rs.getString("email"),
-            senha = rs.getString("senha_hash"),
+            senha = "Sem senha para voce!",
             tipoUsuario = Role.valueOf(rs.getString("tipo_usuario")),
             usuarioCriacao = rs.getString("usuario_criacao"),
             criadoEm = rs.getTimestamp("criado_em").toInstant().toKotlinInstant(),
