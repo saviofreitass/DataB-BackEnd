@@ -26,8 +26,7 @@ class JWTUtil (
     fun generateToken(usuario: Usuario): String?{
         return Jwts.builder()
             .subject(usuario.id.toString())
-            .subject(usuario.tipoUsuario.toString())
-            .subject((usuario.email))
+            .claim("email", usuario.email)
             .claim("tipo", usuario.tipoUsuario.toString())
             .expiration(Date(System.currentTimeMillis() + expiration))
             .signWith(getSecretKey(), SIG.HS512)
