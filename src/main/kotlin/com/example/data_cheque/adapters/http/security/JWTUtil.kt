@@ -37,11 +37,13 @@ class JWTUtil (
 
         val pessoa = when (usuario.tipoUsuario) {
             Role.ROLE_FUNCIONARIO -> {
-                funcionarioService.findByIdUser(usuario.id)?.also { f ->
+                funcionarioService.findByUserId(usuario.id)?.also { f ->
                     claims["contador_id"] = f.contador
                 }?.pessoa
             }
-            else -> contadorService.findByUserId(usuario.id)?.pessoa
+            else -> contadorService.findByUserId(usuario.id)?.also { c ->
+                claims["id"] = c.id
+            }?.pessoa
         }
 
         claims["nome"] = pessoa?.nome

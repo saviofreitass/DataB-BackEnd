@@ -8,7 +8,7 @@ interface FuncionarioRepository {
 
     fun findById(funcionarioId: UUID): Funcionario?
 
-    fun findByIdUser(usuarioId: UUID): Funcionario?
+    fun findByUserId(usuarioId: UUID): Funcionario?
 
     fun insert(funcionario: Funcionario): Boolean
 

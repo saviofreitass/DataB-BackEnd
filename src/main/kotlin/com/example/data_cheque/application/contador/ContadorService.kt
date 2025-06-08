@@ -26,7 +26,7 @@ class ContadorService (
     }
 
     fun findByUserId(usuarioId: UUID): Contador? {
-        return contadorRepository.findById(usuarioId)
+        return contadorRepository.findByUserId(usuarioId)
     }
     
     fun insert(contadorCreateCommand: ContadorCreateCommand): Contador?{

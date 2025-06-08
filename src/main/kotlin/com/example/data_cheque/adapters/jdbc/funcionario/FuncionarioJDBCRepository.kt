@@ -55,7 +55,7 @@ class FuncionarioJDBCRepository(
         return funcionario
     }
 
-    override fun findByIdUser(usuarioId: UUID): Funcionario? {
+    override fun findByUserId(usuarioId: UUID): Funcionario? {
         val funcionario = try {
             val params = MapSqlParameterSource("usuario_id", usuarioId)
             db.query(sqlSelectByUserId(), params, rowMapper()).firstOrNull()

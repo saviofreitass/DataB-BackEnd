@@ -27,8 +27,8 @@ class FuncionarioService (
         return funcionarioRepository.findById(funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
     }
 
-    fun findByIdUser(usuarioId: UUID): Funcionario?{
-        return funcionarioRepository.findByIdUser(usuarioId)
+    fun findByUserId(usuarioId: UUID): Funcionario?{
+        return funcionarioRepository.findByUserId(usuarioId)
     }
 
     fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): Funcionario? {
