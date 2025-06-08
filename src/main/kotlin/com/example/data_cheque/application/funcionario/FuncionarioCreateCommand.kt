@@ -1,15 +1,13 @@
 package com.example.data_cheque.application.funcionario
 
+import InstantSerializer
 import com.example.data_cheque.application.pessoa.PessoaCreateCommand
-import com.example.data_cheque.application.pessoa.toPessoa
-import com.example.data_cheque.application.usuario.EncoderPassword
 import com.example.data_cheque.application.usuario.UsuarioCreateCommand
-import com.example.data_cheque.application.usuario.toUsuario
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.pessoa.Pessoa
 import com.example.data_cheque.domain.usuario.Usuario
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import java.sql.Timestamp
 import java.util.*
 
 @Serializable
@@ -19,7 +17,7 @@ data class FuncionarioCreateCommand(
     val cargo: String,
     val setor: String,
     val salario: Double,
-    val dataAdmissao: Timestamp,
+    val dataAdmissao: Instant,
 )
 
 fun FuncionarioCreateCommand.toFuncionario(pessoa: Pessoa, usuario: Usuario) = Funcionario(

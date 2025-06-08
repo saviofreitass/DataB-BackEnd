@@ -110,7 +110,7 @@ class FuncionarioJDBCRepository(
             cargo = rs.getString("cargo"),
             setor = rs.getString("setor"),
             salario = rs.getDouble("salario"),
-            dataAdmissao = rs.getTimestamp("data_admissao")
+            dataAdmissao = rs.getTimestamp("data_admissao").toInstant().toKotlinInstant()
         )
     }
 

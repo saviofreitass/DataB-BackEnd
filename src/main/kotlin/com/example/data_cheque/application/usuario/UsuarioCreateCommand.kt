@@ -1,13 +1,9 @@
 package com.example.data_cheque.application.usuario
 
-import com.example.data_cheque.domain.empregador.Empregador
 import com.example.data_cheque.domain.usuario.Role
 import com.example.data_cheque.domain.usuario.Usuario
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import java.sql.Timestamp
 import java.util.*
 
 @Serializable

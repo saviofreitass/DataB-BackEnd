@@ -1,14 +1,17 @@
 package com.example.data_cheque.application.contracheque
 
 import com.example.data_cheque.domain.contracheque.Contracheque
+import LocalDateSerializer
 import kotlinx.datetime.Clock
+import kotlinx.serialization.Serializable
 import java.time.LocalDate
 import java.util.*
 
+@Serializable
 data class ContrachequeCommand(
-    val dataPagamento: LocalDate,
-    val dataRefInicio: LocalDate,
-    val dataRefFim: LocalDate,
+    @Serializable(with = LocalDateSerializer::class) val dataPagamento: LocalDate,
+    @Serializable(with = LocalDateSerializer::class)val dataRefInicio: LocalDate,
+    @Serializable(with = LocalDateSerializer::class)val dataRefFim: LocalDate,
     val salarioBase: Double,
     val horaExtra: Double? = null,
     val adicionalNoturno: Double? = null,

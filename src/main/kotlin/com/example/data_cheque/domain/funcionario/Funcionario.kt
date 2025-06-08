@@ -2,7 +2,7 @@ package com.example.data_cheque.domain.funcionario
 
 import com.example.data_cheque.domain.pessoa.Pessoa
 import com.example.data_cheque.domain.usuario.Usuario
-import java.sql.Timestamp
+import kotlinx.datetime.Instant
 import java.util.*
 
 data class Funcionario (
@@ -14,5 +14,5 @@ data class Funcionario (
     val cargo: String,
     val setor:  String,
     val salario: Double,
-    val dataAdmissao: Timestamp
+    val dataAdmissao: Instant
 )

@@ -1,6 +1,5 @@
 package com.example.data_cheque.application.funcionario
 
-import com.example.data_cheque.application.pessoa.PessoaCreateCommand
 import com.example.data_cheque.application.pessoa.PessoaUpdateCommand
 import com.example.data_cheque.application.pessoa.toPessoaAtualizada
 import com.example.data_cheque.application.usuario.EncoderPassword
@@ -9,8 +8,7 @@ import com.example.data_cheque.application.usuario.toUsuarioAtualizado
 import com.example.data_cheque.domain.funcionario.Funcionario
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import java.sql.Timestamp
-import java.util.*
+
 
 data class FuncionarioUpdateCommand(
     val usuario: UsuarioUpdateCommand?,
@@ -18,7 +16,7 @@ data class FuncionarioUpdateCommand(
     val cargo: String?,
     val setor: String?,
     val salario: Double?,
-    val dataAdmissao: Timestamp?,
+    val dataAdmissao: Instant?,
     val atualizadoEm: Instant = Clock.System.now(),
     val usuarioAtualizacao: String?
 )

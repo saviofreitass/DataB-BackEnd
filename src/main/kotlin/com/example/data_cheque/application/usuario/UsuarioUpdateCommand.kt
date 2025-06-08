@@ -1,5 +1,6 @@
 package com.example.data_cheque.application.usuario
 
+import com.example.data_cheque.adapters.http.error.UUIDSerializer
 import com.example.data_cheque.domain.usuario.Usuario
 import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
@@ -7,7 +8,7 @@ import java.util.*
 
 @Serializable
 data class UsuarioUpdateCommand(
-    val id: UUID,
+    @Serializable(with = UUIDSerializer::class) val id: UUID,
     val email: String?,
     val senha: String?
 )
