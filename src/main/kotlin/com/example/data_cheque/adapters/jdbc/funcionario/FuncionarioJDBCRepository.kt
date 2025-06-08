@@ -6,6 +6,8 @@ import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressio
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectAll
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectById
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectByUserId
+import com.example.data_cheque.application.contador.ContadorService
+import com.example.data_cheque.domain.contador.Contador
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
 import com.example.data_cheque.domain.pessoa.Pessoa
@@ -13,6 +15,7 @@ import com.example.data_cheque.domain.usuario.Role
 import com.example.data_cheque.domain.usuario.Usuario
 import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toKotlinInstant
+import kotlinx.serialization.Contextual
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.stereotype.Repository
 import mu.KotlinLogging
@@ -25,6 +28,7 @@ import java.util.*
 @Repository
 class FuncionarioJDBCRepository(
     private val db: NamedParameterJdbcOperations,
+    private val contadorService: ContadorService
 ): FuncionarioRepository {
     private companion object{
         val LOGGER = KotlinLogging.logger { }
@@ -120,6 +124,7 @@ class FuncionarioJDBCRepository(
 
         Funcionario(
             id = funcionarioId,
+            contador = UUID.fromString(rs.getString("contador_id")),
             usuario = usuario,
             pessoa = pessoa,
             cargo = rs.getString("cargo"),
@@ -132,6 +137,7 @@ class FuncionarioJDBCRepository(
     private fun parametros(funcionario: Funcionario): MapSqlParameterSource {
         val params = MapSqlParameterSource()
         params.addValue("id", funcionario.id)
+        params.addValue("contador_id", funcionario.contador)
         params.addValue("usuario_id", funcionario.usuario.id)
         params.addValue("pessoa_id", funcionario.pessoa.id)
         params.addValue("cargo", funcionario.cargo)

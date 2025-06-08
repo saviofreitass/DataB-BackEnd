@@ -4,6 +4,7 @@ object FuncionarioSQLExpressions {
     fun sqlSelectAll() = """
     SELECT 
             f.id,
+            f.contador_id,
             f.usuario_id,
             f.pessoa_id,
             f.cargo,
@@ -29,6 +30,7 @@ object FuncionarioSQLExpressions {
     fun sqlSelectById() = """
         SELECT 
             f.id,
+            f.contador_id,
             f.usuario_id,
             f.pessoa_id,
             f.cargo,
@@ -55,6 +57,7 @@ object FuncionarioSQLExpressions {
     fun sqlSelectByUserId() = """
         SELECT 
             f.id,
+            f.contador_id,
             f.usuario_id,
             f.pessoa_id,
             f.cargo,
@@ -81,6 +84,7 @@ object FuncionarioSQLExpressions {
     fun sqlInsertFuncionario() = """
         INSERT INTO funcionarios(
             id,
+            contador_id,
             usuario_id,
             pessoa_id,
             cargo,
@@ -89,6 +93,7 @@ object FuncionarioSQLExpressions {
             salario    
         ) VALUES(
             :id,
+            :contador_id,
             :usuario_id,
             :pessoa_id,
             :cargo,
@@ -101,6 +106,7 @@ object FuncionarioSQLExpressions {
     fun sqlUpdateFuncionario() = """
         UPDATE funcionarios
             set 
+                contador_id = :contador_id,
                 usuario_id = :usuario_id,
                 pessoa_id = :pessoa_id,
                 cargo = :cargo,

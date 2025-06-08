@@ -30,20 +30,25 @@ class JWTUtil (
     private lateinit var secret: String
 
     fun generateToken(usuario: Usuario): String?{
-        val pessoa: Pessoa?;
-        if(usuario.tipoUsuario == Role.ROLE_FUNCIONARIO){
-            val funcionario = funcionarioService.findByIdUser(usuario.id)
-            pessoa = funcionario?.pessoa
-        }else{
-            val contador = contadorService.findByUserId(usuario.id)
-            pessoa = contador?.pessoa
+        val claims = mutableMapOf<String, Any?>(
+            "email" to usuario.email,
+            "tipo" to usuario.tipoUsuario.toString()
+        )
+
+        val pessoa = when (usuario.tipoUsuario) {
+            Role.ROLE_FUNCIONARIO -> {
+                funcionarioService.findByIdUser(usuario.id)?.also { f ->
+                    claims["contador_id"] = f.contador
+                }?.pessoa
+            }
+            else -> contadorService.findByUserId(usuario.id)?.pessoa
         }
+
+        claims["nome"] = pessoa?.nome
 
         return Jwts.builder()
             .subject(usuario.id.toString())
-            .claim("email", usuario.email)
-            .claim("tipo", usuario.tipoUsuario.toString())
-            .claim("nome", pessoa?.nome)
+            .also { builder -> claims.forEach { (k, v) -> builder.claim(k, v) } }
             .expiration(Date(System.currentTimeMillis() + expiration))
             .signWith(getSecretKey(), SIG.HS512)
             .compact()

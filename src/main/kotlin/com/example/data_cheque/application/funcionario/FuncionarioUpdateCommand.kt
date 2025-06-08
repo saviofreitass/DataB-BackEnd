@@ -8,9 +8,11 @@ import com.example.data_cheque.application.usuario.toUsuarioAtualizado
 import com.example.data_cheque.domain.funcionario.Funcionario
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import java.util.*
 
 
 data class FuncionarioUpdateCommand(
+    val contador: String?,
     val usuario: UsuarioUpdateCommand?,
     val pessoa: PessoaUpdateCommand?,
     val cargo: String?,
@@ -27,6 +29,7 @@ fun FuncionarioUpdateCommand.toFuncionarioAtualizado(
     encoderPassword: EncoderPassword
 ): Funcionario {
     return funcionario.copy(
+        contador = UUID.fromString(this.contador) ?: funcionario.contador,
         cargo = this.cargo ?: funcionario.cargo,
         setor = this.setor ?: funcionario.setor,
         salario = this.salario ?: funcionario.salario,
