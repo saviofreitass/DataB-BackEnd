@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS data_cheque;
+
 CREATE TABLE IF NOT EXISTS data_cheque.usuarios (
     id UUID PRIMARY KEY,
     email VARCHAR(100) NOT NULL,
