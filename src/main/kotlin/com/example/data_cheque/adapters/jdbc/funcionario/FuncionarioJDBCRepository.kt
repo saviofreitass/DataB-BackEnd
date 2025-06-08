@@ -10,12 +10,14 @@ import com.example.data_cheque.domain.funcionario.FuncionarioRepository
 import com.example.data_cheque.domain.pessoa.Pessoa
 import com.example.data_cheque.domain.usuario.Role
 import com.example.data_cheque.domain.usuario.Usuario
+import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toKotlinInstant
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.stereotype.Repository
 import mu.KotlinLogging
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
+import java.sql.Timestamp
 import java.util.*
 
 
@@ -122,7 +124,7 @@ class FuncionarioJDBCRepository(
         params.addValue("cargo", funcionario.cargo)
         params.addValue("setor", funcionario.setor)
         params.addValue("salario", funcionario.salario)
-        params.addValue("data_admissao", funcionario.dataAdmissao)
+        params.addValue("data_admissao", Timestamp.from(funcionario.dataAdmissao.toJavaInstant()))
 
         return params
     }

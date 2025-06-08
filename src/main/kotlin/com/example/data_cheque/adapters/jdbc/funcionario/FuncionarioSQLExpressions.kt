@@ -15,7 +15,11 @@ object FuncionarioSQLExpressions {
             p.telefone,
             p.ativo,
             u.email,
+            u.criado_em,
+            u.usuario_criacao,
             u.tipo_usuario,
+            u.atualizado_em,
+            u.usuario_atualizacao
         FROM funcionarios f
         JOIN pessoa p ON f.pessoa_id = p.id
         JOIN usuarios u ON f.usuario_id = u.id
