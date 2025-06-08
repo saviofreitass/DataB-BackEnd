@@ -30,6 +30,10 @@ class ContadorService (
     }
     
     fun insert(contadorCreateCommand: ContadorCreateCommand): Contador?{
+
+        usuarioService.createValidations(contadorCreateCommand.usuario)
+        pessoaService.createValidation(contadorCreateCommand.pessoa)
+
         try {
             val novoUsuario = usuarioService.insert(contadorCreateCommand.usuario)
             val novaPessoa = pessoaService.insert(contadorCreateCommand.pessoa)
@@ -43,12 +47,14 @@ class ContadorService (
     }
 
     fun update(contadorUpdateCommand: ContadorUpdateCommand, contadorId: UUID): Contador{
-        //criar uma exception para contador que não conseguiu atualizar
-        val contadorAtualizado = contadorUpdateCommand.usuario?.let { usuarioDTO ->
+
+        val usuarioAtualizado = contadorUpdateCommand.usuario?.let { usuarioDTO ->
+            usuarioService.updateValidation(usuarioDTO)
             usuarioService.update(usuarioDTO, usuarioDTO.id)
         }
 
         val pessoaAtualizada = contadorUpdateCommand.pessoa?.let { pessoaDTO ->
+            pessoaService.updateValidation(pessoaDTO)
             pessoaService.update(pessoaDTO, pessoaDTO.id)
         }
 

@@ -8,6 +8,8 @@ interface PessoaRepository {
 
     fun findById(id: UUID): Pessoa?
 
+    fun findByCPFCNPJ(cpf: String): Pessoa?
+
     fun insert(pessoa: Pessoa): Boolean
 
     fun update(pessoa: Pessoa): Boolean

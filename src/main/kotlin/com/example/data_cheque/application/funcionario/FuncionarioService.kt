@@ -33,6 +33,9 @@ class FuncionarioService (
 
     fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): Funcionario? {
 
+        usuarioService.createValidations(funcionarioCreateCommand.usuario)
+        pessoaService.createValidation(funcionarioCreateCommand.pessoa)
+
         try{
             val novoUsuario = usuarioService.insert(funcionarioCreateCommand.usuario)
             val novaPessoa = pessoaService.insert(funcionarioCreateCommand.pessoa)
@@ -46,11 +49,13 @@ class FuncionarioService (
     }
 
     fun update(funcionarioUpdateCommand: FuncionarioUpdateCommand, funcionarioId: UUID): Funcionario {
-        val funcionarioAtualizado = funcionarioUpdateCommand.usuario?.let { usuarioDto ->
+        val usuarioAtualizado = funcionarioUpdateCommand.usuario?.let { usuarioDto ->
+            usuarioService.updateValidation(usuarioDto)
             usuarioService.update(usuarioDto, usuarioDto.id)
         }
 
         val pessoaAtualizada = funcionarioUpdateCommand.pessoa?.let { pessoaDTO ->
+            pessoaService.updateValidation(pessoaDTO)
             pessoaService.update(pessoaDTO, pessoaDTO.id)
         }
 

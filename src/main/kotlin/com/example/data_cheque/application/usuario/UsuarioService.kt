@@ -28,12 +28,6 @@ class UsuarioService(
     }
 
     fun insert(usuarioCreateCommand: UsuarioCreateCommand): Usuario {
-        val validationsStrategies: List<AccountValidationEstrategy<UsuarioCreateCommand>> = listOf(
-            EmailValidationImpl(usuarioRepository),
-            PasswordValidationImpl()
-        )
-
-        validationsStrategies.forEach { it.execute(usuarioCreateCommand) }
 
         val usuarioDomain = usuarioCreateCommand.toUsuario(encoderPassword)
 
@@ -43,15 +37,7 @@ class UsuarioService(
     }
 
     fun update(usuarioUpdateCommand: UsuarioUpdateCommand, id: UUID): Usuario {
-
-        val validationsStrategies: List<AccountValidationEstrategy<UsuarioUpdateCommand>> = listOf(
-            EmailUpdateValidationImpl(usuarioRepository),
-            PasswordUpdateValidationImpl()
-        )
-
         val usuarioEncontrado = usuarioRepository.findById(id) ?: throw UsuarioNaoEncontradoException(id)
-
-        validationsStrategies.forEach { it.execute(usuarioUpdateCommand) }
 
         usuarioRepository.update(usuarioUpdateCommand.toUsuarioAtualizado(usuarioEncontrado, encoderPassword))
         return findById(id)
@@ -60,5 +46,24 @@ class UsuarioService(
     fun delete(usuarioId: UUID){
         usuarioRepository.findById(usuarioId = usuarioId) ?: throw UsuarioNaoEncontradoException(usuarioId)
         usuarioRepository.delete(usuarioId)
+    }
+
+    fun createValidations(usuarioCreateCommand: UsuarioCreateCommand){
+        val validationsStrategies: List<AccountValidationEstrategy<UsuarioCreateCommand>> = listOf(
+            EmailValidationImpl(usuarioRepository),
+            PasswordValidationImpl()
+        )
+
+        validationsStrategies.forEach { it.execute(usuarioCreateCommand) }
+    }
+
+    fun updateValidation(usuarioUpdateCommand: UsuarioUpdateCommand){
+        val validationsStrategies: List<AccountValidationEstrategy<UsuarioUpdateCommand>> = listOf(
+            EmailUpdateValidationImpl(usuarioRepository),
+            PasswordUpdateValidationImpl()
+        )
+
+        validationsStrategies.forEach { it.execute(usuarioUpdateCommand) }
+
     }
 }

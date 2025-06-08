@@ -7,6 +7,7 @@ import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlSele
 import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlSelectById
 import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlDeletePessoaById
 import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlInsertPessoa
+import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlSelectByCPFCNPJ
 import com.example.data_cheque.adapters.jdbc.pessoa.PessoaSQLExpressions.sqlUpdatePessoa
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.stereotype.Repository
@@ -41,6 +42,16 @@ class PessoaJDBCRepository (private val db: NamedParameterJdbcOperations) : Pess
         }
         return pessoa
     }
+
+    override fun findByCPFCNPJ(cpf: String): Pessoa? {
+        val pessoa = try {
+            val params = MapSqlParameterSource("cpfcnpj", cpf)
+            db.query(sqlSelectByCPFCNPJ(), params, rowMapper()).firstOrNull()
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao consultar a pessoa: ${ex.message}" }
+            throw ex
+        }
+        return pessoa    }
 
     override fun insert(pessoa: Pessoa): Boolean {
         try {
