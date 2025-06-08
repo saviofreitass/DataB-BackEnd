@@ -7,6 +7,8 @@ interface ContadorRepository {
 
     fun findById(contadorId: UUID): Contador?
 
+    fun findByUserId(usuarioId: UUID): Contador?
+
     fun insert(contador: Contador): Boolean
 
     fun update(contador: Contador): Boolean

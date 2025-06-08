@@ -5,6 +5,7 @@ import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressio
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlUpdateFuncionario
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectAll
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectById
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectByUserId
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
 import com.example.data_cheque.domain.pessoa.Pessoa
@@ -49,6 +50,18 @@ class FuncionarioJDBCRepository(
         }
         return funcionario
     }
+
+    override fun findByIdUser(usuarioId: UUID): Funcionario? {
+        val funcionario = try {
+            val params = MapSqlParameterSource("usuario_id", usuarioId)
+            db.query(sqlSelectByUserId(), params, rowMapper()).firstOrNull()
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao consultar o funcionário" }
+            throw ex;
+        }
+        return funcionario
+    }
+
 
     override fun insert(funcionario: Funcionario): Boolean {
         try {

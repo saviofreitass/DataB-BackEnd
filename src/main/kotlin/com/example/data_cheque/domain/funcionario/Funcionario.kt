@@ -7,8 +7,7 @@ import java.util.*
 
 data class Funcionario (
     val id: UUID,
-//    val usuarioId: UUID,
-//    val pessoaId: UUID,
+    // val contador: Contador,
     val usuario: Usuario,
     val pessoa: Pessoa,
     val cargo: String,

@@ -1,6 +1,10 @@
 package com.example.data_cheque.adapters.http.security
 
+import com.example.data_cheque.application.contador.ContadorService
+import com.example.data_cheque.application.funcionario.FuncionarioService
 import com.example.data_cheque.application.usuario.UsuarioService
+import com.example.data_cheque.domain.pessoa.Pessoa
+import com.example.data_cheque.domain.usuario.Role
 import com.example.data_cheque.domain.usuario.Usuario
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
@@ -16,7 +20,9 @@ import java.util.*
 
 @Component
 class JWTUtil (
-    private val usuarioService: UsuarioService
+    private val usuarioService: UsuarioService,
+    private val funcionarioService: FuncionarioService,
+    private val contadorService: ContadorService
 ) {
     private val expiration: Long = 24 * 60 * 60 * 1000
 
@@ -24,10 +30,20 @@ class JWTUtil (
     private lateinit var secret: String
 
     fun generateToken(usuario: Usuario): String?{
+        val pessoa: Pessoa?;
+        if(usuario.tipoUsuario == Role.ROLE_FUNCIONARIO){
+            val funcionario = funcionarioService.findByIdUser(usuario.id)
+            pessoa = funcionario?.pessoa
+        }else{
+            val contador = contadorService.findByUserId(usuario.id)
+            pessoa = contador?.pessoa
+        }
+
         return Jwts.builder()
             .subject(usuario.id.toString())
             .claim("email", usuario.email)
             .claim("tipo", usuario.tipoUsuario.toString())
+            .claim("nome", pessoa?.nome)
             .expiration(Date(System.currentTimeMillis() + expiration))
             .signWith(getSecretKey(), SIG.HS512)
             .compact()

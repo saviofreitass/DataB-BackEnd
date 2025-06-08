@@ -24,6 +24,10 @@ class ContadorService (
     fun findById(contadorId: UUID): Contador {
         return contadorRepository.findById(contadorId) ?: throw ContadorNaoEncontradoException(contadorId)
     }
+
+    fun findByUserId(usuarioId: UUID): Contador? {
+        return contadorRepository.findById(usuarioId)
+    }
     
     fun insert(contadorCreateCommand: ContadorCreateCommand): Contador?{
         try {

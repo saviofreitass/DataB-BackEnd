@@ -46,6 +46,29 @@ object ContadorSQLExpressions {
         WHERE c.id = :id
     """.trimIndent()
 
+    fun sqlSelectByUserId() = """
+        SELECT
+            c.id,
+            c.usuario_id,
+            c. pessoa_id,
+            c.crc,
+            p.nome,
+            p.cpfcnpj,
+            p.telefone,
+            p.ativo,
+            u.email,
+            u.senha_hash,
+            u.criado_em,
+            u.usuario_criacao,
+            u.tipo_usuario,
+            u.atualizado_em,
+            u.usuario_atualizacao
+        FROM contador c
+        JOIN pessoa p ON c.pessoa_id = p.id
+        JOIN usuarios u ON c.usuario_id = u.id
+        WHERE c.usuario_id = :usuario_id
+    """.trimIndent()
+
     fun sqlInsertContador() = """
         INSERT INTO contador(
             id,

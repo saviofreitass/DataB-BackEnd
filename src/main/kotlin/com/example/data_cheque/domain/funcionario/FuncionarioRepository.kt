@@ -1,5 +1,6 @@
 package com.example.data_cheque.domain.funcionario
 
+import com.example.data_cheque.domain.pessoa.Pessoa
 import java.util.*
 
 interface FuncionarioRepository {
@@ -7,8 +8,11 @@ interface FuncionarioRepository {
 
     fun findById(funcionarioId: UUID): Funcionario?
 
+    fun findByIdUser(usuarioId: UUID): Funcionario?
+
     fun insert(funcionario: Funcionario): Boolean
 
     fun update(funcionario: Funcionario): Boolean
 
-    fun delete(funcionarioId: UUID): Boolean}
+    fun delete(funcionarioId: UUID): Boolean
+}

@@ -3,10 +3,13 @@ package com.example.data_cheque.application.funcionario
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoCadastrado
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoEncontradoException
 import com.example.data_cheque.application.pessoa.PessoaService
+import com.example.data_cheque.application.pessoa.exception.PessoaNaoEncontradaException
 import com.example.data_cheque.application.usuario.EncoderPassword
 import com.example.data_cheque.application.usuario.UsuarioService
+import com.example.data_cheque.application.usuario.exception.UsuarioNaoEncontradoException
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
+import com.example.data_cheque.domain.pessoa.Pessoa
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -22,6 +25,10 @@ class FuncionarioService (
     }
     fun findById(funcionarioId: UUID): Funcionario {
         return funcionarioRepository.findById(funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
+    }
+
+    fun findByIdUser(usuarioId: UUID): Funcionario?{
+        return funcionarioRepository.findByIdUser(usuarioId)
     }
 
     fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): Funcionario? {
