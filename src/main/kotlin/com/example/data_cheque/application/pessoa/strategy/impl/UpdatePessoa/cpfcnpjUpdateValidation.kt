@@ -11,8 +11,8 @@ class cpfcnpjUpdateValidation(
     override fun execute(command: PessoaUpdateCommand) {
         val pessoaEncontrada = command.cpfcnpj?.let { pessoaRepository.findByCPFCNPJ(it) }
 
-        if(pessoaEncontrada != null && command.id != pessoaEncontrada.id){
-            throw CPFCNPFExistenteException(pessoaEncontrada.cpfcnpj)
+        if(pessoaEncontrada?.id != command.id && pessoaEncontrada?.cpfcnpj == command.cpfcnpj){
+            throw CPFCNPFExistenteException(pessoaEncontrada?.cpfcnpj)
         }
     }
 }
