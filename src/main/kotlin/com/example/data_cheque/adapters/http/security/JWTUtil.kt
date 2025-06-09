@@ -1,6 +1,10 @@
 package com.example.data_cheque.adapters.http.security
 
+import com.example.data_cheque.application.contador.ContadorService
+import com.example.data_cheque.application.funcionario.FuncionarioService
 import com.example.data_cheque.application.usuario.UsuarioService
+import com.example.data_cheque.domain.pessoa.Pessoa
+import com.example.data_cheque.domain.usuario.Role
 import com.example.data_cheque.domain.usuario.Usuario
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
@@ -16,7 +20,9 @@ import java.util.*
 
 @Component
 class JWTUtil (
-    private val usuarioService: UsuarioService
+    private val usuarioService: UsuarioService,
+    private val funcionarioService: FuncionarioService,
+    private val contadorService: ContadorService
 ) {
     private val expiration: Long = 24 * 60 * 60 * 1000
 
@@ -24,10 +30,28 @@ class JWTUtil (
     private lateinit var secret: String
 
     fun generateToken(usuario: Usuario): String?{
+        val claims = mutableMapOf<String, Any?>(
+            "email" to usuario.email,
+            "tipo" to usuario.tipoUsuario.toString()
+        )
+
+        val pessoa = when (usuario.tipoUsuario) {
+            Role.ROLE_FUNCIONARIO -> {
+                funcionarioService.findByUserId(usuario.id)?.also { f ->
+                    claims["contador_id"] = f.contador
+                    claims["id"] = f.id
+                }?.pessoa
+            }
+            else -> contadorService.findByUserId(usuario.id)?.also { c ->
+                claims["id"] = c.id
+            }?.pessoa
+        }
+
+        claims["nome"] = pessoa?.nome
+
         return Jwts.builder()
             .subject(usuario.id.toString())
-            .claim("email", usuario.email)
-            .claim("tipo", usuario.tipoUsuario.toString())
+            .also { builder -> claims.forEach { (k, v) -> builder.claim(k, v) } }
             .expiration(Date(System.currentTimeMillis() + expiration))
             .signWith(getSecretKey(), SIG.HS512)
             .compact()
@@ -50,5 +74,15 @@ class JWTUtil (
     fun getAuthotetication(jwt: String?): Authentication {
         val username = Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(jwt).payload.subject
         return UsernamePasswordAuthenticationToken(username, null, null)
+    }
+
+    fun decodificarJwtPayload(jwt: String): String {
+        return try {
+            val payload = jwt.split(".")[1]
+            val decodedBytes = Base64.getUrlDecoder().decode(payload)
+            String(decodedBytes)
+        } catch (e: Exception) {
+            "Erro ao decodificar JWT: ${e.message}"
+        }
     }
 }

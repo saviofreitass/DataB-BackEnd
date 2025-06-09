@@ -4,6 +4,7 @@ import com.example.data_cheque.adapters.jdbc.contador.ContadorSQLExpressions.sql
 import com.example.data_cheque.adapters.jdbc.contador.ContadorSQLExpressions.sqlInsertContador
 import com.example.data_cheque.adapters.jdbc.contador.ContadorSQLExpressions.sqlSelectAll
 import com.example.data_cheque.adapters.jdbc.contador.ContadorSQLExpressions.sqlSelectById
+import com.example.data_cheque.adapters.jdbc.contador.ContadorSQLExpressions.sqlSelectByUserId
 import com.example.data_cheque.adapters.jdbc.contador.ContadorSQLExpressions.sqlUpdateContador
 import com.example.data_cheque.domain.contador.Contador
 import com.example.data_cheque.domain.contador.ContadorRepository
@@ -43,6 +44,18 @@ class ContadorJDBCRepository(
             val params = MapSqlParameterSource("id", contadorId)
             db.query(sqlSelectById(), params, rowMapper()).firstOrNull()
         }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao consultar os contadores: ${ex.message}" }
+            throw ex
+        }
+
+        return contador
+    }
+
+    override fun findByUserId(usuarioId: UUID): Contador? {
+        val contador = try {
+            val params = MapSqlParameterSource("usuario_id", usuarioId)
+            db.query(sqlSelectByUserId(), params, rowMapper()).firstOrNull()
+        } catch (ex: Exception) {
             LOGGER.error { "Houve um erro ao consultar os contadores: ${ex.message}" }
             throw ex
         }

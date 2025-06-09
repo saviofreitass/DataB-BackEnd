@@ -1,6 +1,7 @@
 plugins {
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
+	kotlin("plugin.serialization") version "1.9.23"
 	id("org.springframework.boot") version "3.4.4"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.flywaydb.flyway") version "9.22.3"
@@ -49,7 +50,7 @@ tasks.withType<Test> {
 flyway{
 	url = "jdbc:postgresql://localhost:5432/data_cheque"
 	user = "postgres"
-	password = "123456"
+	password = "566031"
 	schemas = arrayOf("data_cheque")
 }
 

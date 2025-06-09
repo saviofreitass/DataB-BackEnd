@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS data_cheque.funcionarios (
     usuario_id UUID NOT NULL,
     pessoa_id UUID NOT NULL,
     empregador_id UUID,
-    contador_id UUID,
+    contador_id UUID NOT NULL,
     cargo VARCHAR(100),
     setor VARCHAR(100),
     data_admissao TIMESTAMP WITH TIME ZONE,

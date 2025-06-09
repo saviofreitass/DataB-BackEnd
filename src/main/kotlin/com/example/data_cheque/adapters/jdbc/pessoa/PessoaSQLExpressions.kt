@@ -22,6 +22,17 @@ object PessoaSQLExpressions {
         WHERE id = :id
     """.trimIndent()
 
+    fun sqlSelectByCPFCNPJ() = """
+        SELECT 
+            id,
+            nome,
+            cpfcnpj,
+            telefone,
+            ativo
+        FROM pessoa
+        WHERE cpfcnpj = :cpfcnpj
+    """.trimIndent()
+
     fun sqlInsertPessoa() = """
         INSERT INTO pessoa(
             id,

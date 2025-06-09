@@ -3,10 +3,13 @@ package com.example.data_cheque.application.funcionario
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoCadastrado
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoEncontradoException
 import com.example.data_cheque.application.pessoa.PessoaService
+import com.example.data_cheque.application.pessoa.exception.PessoaNaoEncontradaException
 import com.example.data_cheque.application.usuario.EncoderPassword
 import com.example.data_cheque.application.usuario.UsuarioService
+import com.example.data_cheque.application.usuario.exception.UsuarioNaoEncontradoException
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
+import com.example.data_cheque.domain.pessoa.Pessoa
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -24,7 +27,14 @@ class FuncionarioService (
         return funcionarioRepository.findById(funcionarioId) ?: throw FuncionarioNaoEncontradoException(funcionarioId)
     }
 
+    fun findByUserId(usuarioId: UUID): Funcionario?{
+        return funcionarioRepository.findByUserId(usuarioId)
+    }
+
     fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): Funcionario? {
+
+        usuarioService.createValidations(funcionarioCreateCommand.usuario)
+        pessoaService.createValidation(funcionarioCreateCommand.pessoa)
 
         try{
             val novoUsuario = usuarioService.insert(funcionarioCreateCommand.usuario)
@@ -39,11 +49,13 @@ class FuncionarioService (
     }
 
     fun update(funcionarioUpdateCommand: FuncionarioUpdateCommand, funcionarioId: UUID): Funcionario {
-        val funcionarioAtualizado = funcionarioUpdateCommand.usuario?.let { usuarioDto ->
+        val usuarioAtualizado = funcionarioUpdateCommand.usuario?.let { usuarioDto ->
+            usuarioService.updateValidation(usuarioDto)
             usuarioService.update(usuarioDto, usuarioDto.id)
         }
 
         val pessoaAtualizada = funcionarioUpdateCommand.pessoa?.let { pessoaDTO ->
+            pessoaService.updateValidation(pessoaDTO)
             pessoaService.update(pessoaDTO, pessoaDTO.id)
         }
 
