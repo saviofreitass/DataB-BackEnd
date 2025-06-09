@@ -32,7 +32,7 @@ class ContrachequeController(
         return contrachequeHandler.findById(contrachequeId, funcionarioId )
     }
 
-    @PostMapping("/contracheques/{funcionarioId:$UUID_REGEX}")
+    @PostMapping("/contracheques/{contadorId:$UUID_REGEX}/{funcionarioId:$UUID_REGEX}")
     fun inserir(
         @RequestBody contracheque: ContrachequeCommand,
         @PathVariable funcionarioId: String,
@@ -41,7 +41,7 @@ class ContrachequeController(
         return contrachequeHandler.inserir(contracheque, funcionarioId, contadorId)
     }
 
-    @PutMapping("/contracheques/{funcionarioId:$UUID_REGEX}/{contrachequeId:$UUID_REGEX}")
+    @PutMapping("/contracheques/{contadorId:$UUID_REGEX}/{funcionarioId:$UUID_REGEX}/{contrachequeId:$UUID_REGEX}")
     fun atualizar(
         @RequestBody contracheque: ContrachequeCommand,
         @PathVariable contrachequeId: String,

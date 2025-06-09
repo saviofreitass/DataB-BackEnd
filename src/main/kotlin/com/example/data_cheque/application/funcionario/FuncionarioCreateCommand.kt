@@ -7,7 +7,6 @@ import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.pessoa.Pessoa
 import com.example.data_cheque.domain.usuario.Usuario
 import kotlinx.datetime.Instant
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*
 
