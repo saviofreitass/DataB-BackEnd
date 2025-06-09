@@ -23,7 +23,7 @@ class EmpregadorService(
         contadorId: UUID,
     ): Empregador?{
         val empregadorDomain = empregador.toEmpregador(contadorId = contadorId)
-        empregadorRepository.inserir(empregador = empregadorDomain, contadorId = contadorId)
+        empregadorRepository.inserir(empregador = empregadorDomain)
         return findByIdContador(contadorId, empregadorDomain.id)
     }
 
@@ -39,7 +39,6 @@ class EmpregadorService(
                 .copy(
                     atualizadoEm = Clock.System.now(),
                     usuarioAtualizacao =  "admin",)
-            ,contadorId = contadorId
         )
         return findByIdContador(contadorId, empregadorId)
     }

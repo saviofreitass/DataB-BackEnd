@@ -10,10 +10,12 @@ import com.example.data_cheque.adapters.jdbc.empregador.EmpregadorSqlExpressions
 import com.example.data_cheque.adapters.jdbc.empregador.EmpregadorSqlExpressions.sqlInsertEmpregador
 import com.example.data_cheque.adapters.jdbc.empregador.EmpregadorSqlExpressions.sqlUpdateEmpregador
 import com.example.data_cheque.adapters.jdbc.empregador.EmpregadorSqlExpressions.sqlDeleteById
+import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toKotlinInstant
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
+import java.sql.Timestamp
 import java.sql.Types
 import java.util.UUID
 
@@ -50,9 +52,9 @@ class EmpregadorJDBCRepository(
     }
 
     @Transactional(rollbackFor = [Exception::class])
-    override fun inserir(empregador: Empregador, contadorId: UUID): Boolean {
+    override fun inserir(empregador: Empregador): Boolean {
         try{
-            val params = parametros(empregador, contadorId )
+            val params = parametros(empregador)
             println(params)
 
             val linhasAfetadas = db.update(sqlInsertEmpregador(), params)
@@ -63,9 +65,9 @@ class EmpregadorJDBCRepository(
         }
     }
 
-    override fun atualizar(empregador: Empregador, contadorId: UUID): Boolean {
+    override fun atualizar(empregador: Empregador): Boolean {
         try{
-            val params = parametros(empregador, contadorId)
+            val params = parametros(empregador)
 
             val linhasAfetadas = db.update(sqlUpdateEmpregador(), params)
             return linhasAfetadas > 0
@@ -110,18 +112,18 @@ class EmpregadorJDBCRepository(
             )
         }
 
-    private fun parametros(empregador: Empregador, contadorId: UUID): MapSqlParameterSource {
+    private fun parametros(empregador: Empregador): MapSqlParameterSource {
         val params = MapSqlParameterSource()
         params.addValue("id", empregador.id)
-        params.addValue("contador_id", contadorId)
+        params.addValue("contador_id", empregador.contadorId)
         params.addValue("cnpj", empregador.cnpj)
         params.addValue("razao_social", empregador.razaoSocial)
         params.addValue("nome_fantasia", empregador.nomeFantasia)
         params.addValue("endereco", empregador.endereco)
-        params.addValue("criado_em", empregador.criadoEm)
+        params.addValue("criado_em", Timestamp.from(empregador.criadoEm.toJavaInstant()))
         params.addValue("usuario_criacao", empregador.usuarioCriacao)
         if(empregador.atualizadoEm != null){
-            params.addValue("atualizado_em", empregador.atualizadoEm)
+            params.addValue("atualizado_em",Timestamp.from(empregador.atualizadoEm.toJavaInstant()), Types.TIMESTAMP)
         }else{
             params.addValue("atualizado_em", null, Types.TIMESTAMP)
         }

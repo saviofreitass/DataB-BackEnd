@@ -7,9 +7,9 @@ interface EmpregadorRepository {
 
     fun findByIdContador(contadorId: UUID, empregadorId: UUID): Empregador?
 
-    fun inserir(empregador: Empregador, contadorId: UUID): Boolean
+    fun inserir(empregador: Empregador): Boolean
 
-    fun atualizar(empregador: Empregador, contadorId: UUID): Boolean
+    fun atualizar(empregador: Empregador): Boolean
 
     fun excluir(empregadorId: UUID): Boolean
 }

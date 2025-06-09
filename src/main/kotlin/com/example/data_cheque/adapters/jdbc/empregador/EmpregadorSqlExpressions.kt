@@ -41,8 +41,8 @@ object EmpregadorSqlExpressions {
                 criado_em,
                 usuario_criacao,
                 atualizado_em,
-                usuario_atualizacao
-            ) VALUES (
+                usuario_atualizacao)
+                VALUES (
                 :id,
                 :contador_id,
                 :cnpj,
@@ -52,8 +52,8 @@ object EmpregadorSqlExpressions {
                 :criado_em,
                 :usuario_criacao,
                 :atualizado_em,
-                :usuario_atualizacao  
-            )
+                :usuario_atualizacao
+                 )
             """.trimIndent()
 
     fun sqlUpdateEmpregador() =
