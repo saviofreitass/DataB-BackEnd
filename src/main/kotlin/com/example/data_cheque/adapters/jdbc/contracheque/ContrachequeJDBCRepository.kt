@@ -3,8 +3,10 @@ package com.example.data_cheque.adapters.jdbc.contracheque
 
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlDeleteById
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlInsertContracheque
-import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectAll
-import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectById
+import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectAllContador
+import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectAllFuncionario
+import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectByIdContador
+import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectByIdFuncionario
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlUpdateContracheque
 import com.example.data_cheque.domain.contracheque.ContraChequeRepository
 import com.example.data_cheque.domain.contracheque.Contracheque
@@ -33,7 +35,7 @@ class ContrachequeJDBCRepository(
         val contracheques =
             try{
                 val params = MapSqlParameterSource("funcionario_id", funcionarioId)
-                db.query(sqlSelectAll(), params, rowMapper())
+                db.query(sqlSelectAllFuncionario(), params, rowMapper())
             } catch (ex: Exception) {
                 LOGGER.error{"Houve um erro ao consultar os contracheques: ${ex.message}"}
                 throw ex
@@ -41,12 +43,36 @@ class ContrachequeJDBCRepository(
         return contracheques
     }
 
-    override fun findById(contrachequeId: UUID , funcionarioId: UUID): Contracheque? {
+    override fun findAllByContador(contadorId: UUID): List<Contracheque> {
+        val contracheques =
+            try{
+                val params = MapSqlParameterSource("contador_id", contadorId)
+                db.query(sqlSelectAllContador(), params, rowMapper())
+            }catch(ex:Exception){
+                LOGGER.error{"Houve um erro ao consultar os contracheques: ${ex.message}"}
+                throw ex
+            }
+        return contracheques
+    }
+
+    override fun findByIdFuncionario(contrachequeId: UUID , funcionarioId: UUID): Contracheque? {
         val contracheque =
             try{
                 val params = MapSqlParameterSource(mapOf("id" to contrachequeId , "funcionario_id" to funcionarioId))
-                db.query(sqlSelectById(), params, rowMapper()).firstOrNull()
+                db.query(sqlSelectByIdFuncionario(), params, rowMapper()).firstOrNull()
             } catch (ex: Exception) {
+                LOGGER.error { "Houve um erro ao consultar o contracheque : ${ex.message}" }
+                throw ex
+            }
+        return contracheque
+    }
+
+    override fun findByIdContador(contrachequeId: UUID, contadorId: UUID): Contracheque? {
+        val contracheque =
+            try{
+                val params = MapSqlParameterSource(mapOf("id" to contrachequeId , "contador_id" to contadorId))
+                db.query(sqlSelectByIdContador(), params, rowMapper()).firstOrNull()
+            }catch(ex:Exception){
                 LOGGER.error { "Houve um erro ao consultar o contracheque : ${ex.message}" }
                 throw ex
             }

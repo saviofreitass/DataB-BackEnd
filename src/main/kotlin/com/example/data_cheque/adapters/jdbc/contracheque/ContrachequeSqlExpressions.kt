@@ -23,18 +23,32 @@ object ContrachequeSqlExpressions {
             atualizado_em,
             usuario_atualizacao"""
 
-    fun sqlSelectAll() =
+    fun sqlSelectAllFuncionario() =
         """
         SELECT ${campos()}
         from data_cheque.contracheque
         WHERE funcionario_id = :funcionario_id
         """.trimIndent()
 
-    fun sqlSelectById() =
+    fun sqlSelectAllContador() =
+        """
+            SELECT ${campos()}
+            from data_cheque.contracheque
+            WHERE contador_id = :contador_id
+        """.trimIndent()
+
+    fun sqlSelectByIdFuncionario() =
         """
         SELECT ${campos()}
         from data_cheque.contracheque
         WHERE funcionario_id = :funcionario_id AND id = :id
+        """.trimIndent()
+
+    fun sqlSelectByIdContador() =
+        """
+            SELECT ${campos()}
+            from data_cheque.contracheque
+            WHERE contador_id = :contador_id and id = :id
         """.trimIndent()
 
     fun sqlInsertContracheque() =

@@ -39,6 +39,7 @@ class JWTUtil (
             Role.ROLE_FUNCIONARIO -> {
                 funcionarioService.findByUserId(usuario.id)?.also { f ->
                     claims["contador_id"] = f.contador
+                    claims["id"] = f.id
                 }?.pessoa
             }
             else -> contadorService.findByUserId(usuario.id)?.also { c ->
@@ -73,5 +74,15 @@ class JWTUtil (
     fun getAuthotetication(jwt: String?): Authentication {
         val username = Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(jwt).payload.subject
         return UsernamePasswordAuthenticationToken(username, null, null)
+    }
+
+    fun decodificarJwtPayload(jwt: String): String {
+        return try {
+            val payload = jwt.split(".")[1]
+            val decodedBytes = Base64.getUrlDecoder().decode(payload)
+            String(decodedBytes)
+        } catch (e: Exception) {
+            "Erro ao decodificar JWT: ${e.message}"
+        }
     }
 }

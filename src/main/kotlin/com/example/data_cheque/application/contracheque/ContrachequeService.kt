@@ -14,46 +14,55 @@ class ContrachequeService(
         return contrachequeRepository.findAllByFuncionario(funcionarioId)
     }
 
-    fun findById(
+    fun findAllByContador(contadorId: UUID): List<Contracheque>{
+        return contrachequeRepository.findAllByContador(contadorId)
+    }
+
+    fun findByIdFuncionario(
         contrachequeId: UUID,
         funcionarioId: UUID
     ): Contracheque?{
-        return contrachequeRepository.findById(contrachequeId, funcionarioId)
+        return contrachequeRepository.findByIdFuncionario(contrachequeId, funcionarioId)
+    }
+
+    fun findByIdContador(
+        contrachequeId: UUID,
+        contadorId: UUID
+    ): Contracheque?{
+        return contrachequeRepository.findByIdContador(contrachequeId, contadorId)
     }
 
     fun inserir(
         contracheque: ContrachequeCommand,
-        funcionarioId: UUID,
         contadorId: UUID)
     : Contracheque?{
-        val contrachequeDomain = contracheque.toContracheque(funcId = funcionarioId, contadorId = contadorId)
+        val contrachequeDomain = contracheque.toContracheque(contadorId = contadorId)
         contrachequeRepository.inserir(contracheque = contrachequeDomain)
-        return findById(contrachequeDomain.id , contrachequeDomain.funcId)
+        return findByIdContador(contrachequeDomain.id , contadorId)
     }
 
     fun atualizar(
         contracheque: ContrachequeCommand,
         contrachequeId: UUID,
-        funcionarioId: UUID,
         contadorId: UUID
     ): Contracheque?{
-        contrachequeRepository.findById(contrachequeId, funcionarioId)
+        contrachequeRepository.findByIdContador(contrachequeId, contadorId)
 
         contrachequeRepository.atualizar(
-            contracheque.toContracheque(funcId = funcionarioId, contadorId = contadorId)
+            contracheque.toContracheque( contadorId = contadorId)
                 .copy(
                     atualizadoEm = Clock.System.now(),
-                    usuarioAtualizacao = "admin",
-                ),
-        )
-        return findById(contrachequeId = contrachequeId, funcionarioId = funcionarioId)
+                    usuarioAtualizacao = "admin",),
+            )
+
+        return findByIdContador(contrachequeId = contrachequeId, contadorId = contadorId)
     }
 
     fun excluir(
         contrachequeId: UUID,
-        funcionarioId: UUID,
+        contadorId: UUID
     ) {
-        contrachequeRepository.findById(contrachequeId = contrachequeId, funcionarioId = funcionarioId)
+        contrachequeRepository.findByIdContador(contrachequeId = contrachequeId, contadorId = contadorId )
         contrachequeRepository.excluir(contrachequeId)
     }
 }
