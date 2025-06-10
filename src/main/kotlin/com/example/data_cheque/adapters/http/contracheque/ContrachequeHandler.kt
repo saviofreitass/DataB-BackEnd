@@ -22,6 +22,11 @@ class ContrachequeHandler(
         return ResponseEntity.ok(contracheques)
     }
 
+    fun findAllByEmpregador(empregadorId: String): ResponseEntity<List<Contracheque>>{
+        val contracheques = contrachequeService.findAllByEmpregador(UUID.fromString(empregadorId))
+        return ResponseEntity.ok(contracheques)
+    }
+
     fun findByIdFuncionario(contrachequeId: String,
                  funcionarioId: String
     ): ResponseEntity<Contracheque>{

@@ -4,6 +4,7 @@ package com.example.data_cheque.adapters.jdbc.contracheque
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlDeleteById
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlInsertContracheque
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectAllContador
+import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectAllEmpregador
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectAllFuncionario
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectByIdContador
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlSelectByIdFuncionario
@@ -50,6 +51,18 @@ class ContrachequeJDBCRepository(
                 db.query(sqlSelectAllContador(), params, rowMapper())
             }catch(ex:Exception){
                 LOGGER.error{"Houve um erro ao consultar os contracheques: ${ex.message}"}
+                throw ex
+            }
+        return contracheques
+    }
+
+    override fun findAllByEmpregador(empregadorId: UUID): List<Contracheque>{
+        val contracheques =
+            try{
+                val params = MapSqlParameterSource("empregador_id", empregadorId)
+                db.query(sqlSelectAllEmpregador(), params, rowMapper())
+            }catch(ex:Exception){
+                LOGGER.error { "Houve um erro ao consultar os contracheques: ${ex.message}" }
                 throw ex
             }
         return contracheques
@@ -124,6 +137,7 @@ class ContrachequeJDBCRepository(
                 id = contrachequeId,
                 funcId = UUID.fromString(rs.getString("funcionario_id")),
                 contadorId = UUID.fromString(rs.getString("contador_id")),
+                empregadorId = UUID.fromString(rs.getString("empregador_id")),
                 dataPagamento = rs.getDate("data_pagamento").toLocalDate(),
                 dataRefInicio = rs.getDate("data_ref_inicio").toLocalDate(),
                 dataRefFim = rs.getDate("data_ref_fim").toLocalDate(),
@@ -158,6 +172,7 @@ class ContrachequeJDBCRepository(
         params.addValue("id", contracheque.id)
         params.addValue("funcionario_id", contracheque.funcId)
         params.addValue("contador_id", contracheque.contadorId)
+        params.addValue("empregador_id", contracheque.empregadorId)
         params.addValue("data_pagamento", contracheque.dataPagamento)
         params.addValue("data_ref_inicio", contracheque.dataRefInicio)
         params.addValue("data_ref_fim", contracheque.dataRefFim)

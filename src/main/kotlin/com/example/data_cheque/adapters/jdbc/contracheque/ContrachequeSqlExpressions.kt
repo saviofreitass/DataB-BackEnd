@@ -6,6 +6,7 @@ object ContrachequeSqlExpressions {
             id,
             funcionario_id,
             contador_id,
+            empregador_id,
             data_pagamento,
             data_ref_inicio,       
             data_ref_fim,         
@@ -37,6 +38,13 @@ object ContrachequeSqlExpressions {
             WHERE contador_id = :contador_id
         """.trimIndent()
 
+    fun sqlSelectAllEmpregador() =
+        """
+            SELECT ${campos()}
+            from data_cheque.contracheque
+            WHERE empregador_id = :empregador_id
+        """.trimIndent()
+
     fun sqlSelectByIdFuncionario() =
         """
         SELECT ${campos()}
@@ -57,6 +65,7 @@ object ContrachequeSqlExpressions {
             id,
             funcionario_id,
             contador_id,
+            empregador_id,
             data_pagamento,
             data_ref_inicio,       
             data_ref_fim,         
@@ -77,6 +86,7 @@ object ContrachequeSqlExpressions {
             :id,
             :funcionario_id,
             :contador_id,
+            :empregador_id,
             :data_pagamento,
             :data_ref_inicio,
             :data_ref_fim,         

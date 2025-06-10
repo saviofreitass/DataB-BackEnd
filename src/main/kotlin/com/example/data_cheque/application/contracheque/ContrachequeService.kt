@@ -18,6 +18,10 @@ class ContrachequeService(
         return contrachequeRepository.findAllByContador(contadorId)
     }
 
+    fun findAllByEmpregador(empregadorId: UUID): List<Contracheque>{
+        return contrachequeRepository.findAllByEmpregador(empregadorId)
+    }
+
     fun findByIdFuncionario(
         contrachequeId: UUID,
         funcionarioId: UUID

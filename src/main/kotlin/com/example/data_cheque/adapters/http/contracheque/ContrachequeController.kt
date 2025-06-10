@@ -39,6 +39,11 @@ class ContrachequeController(
         throw Exception("Erro ao reconhecer ROLE")
     }
 
+    @GetMapping("/empregador/{empregadorId:$UUID_REGEX}/contracheques")
+    fun findAllEmpregador(@PathVariable empregadorId: String): ResponseEntity<List<Contracheque>>{
+        return contrachequeHandler.findAllByEmpregador(empregadorId)
+    }
+
     @GetMapping("/contracheques/{contrachequeId:$UUID_REGEX}")
     fun findById(
         @RequestHeader("Authorization") authHeader: String,

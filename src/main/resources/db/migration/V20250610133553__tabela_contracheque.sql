@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS contracheque
     id                      UUID                        NOT NULL PRIMARY KEY,
     funcionario_id          UUID                        NOT NULL,
     contador_id             UUID                        NOT NULL,
+    empregador_id           UUID                        NOT NULL,
     data_pagamento          DATE                        NOT NULL,
     data_ref_inicio         DATE                        NOT NULL,
     data_ref_fim            DATE                        NOT NULL,
@@ -20,5 +21,6 @@ CREATE TABLE IF NOT EXISTS contracheque
     atualizado_em           TIMESTAMP WITH TIME ZONE,
                                           usuario_atualizacao     VARCHAR(100),
     FOREIGN KEY (funcionario_id) REFERENCES data_cheque.funcionarios(id),
-    FOREIGN KEY (contador_id) REFERENCES data_cheque.contador(id)
+    FOREIGN KEY (contador_id) REFERENCES data_cheque.contador(id),
+    FOREIGN KEY (empregador_id) REFERENCES data_cheque.empregador(id)
     )
