@@ -1,6 +1,7 @@
 package com.example.data_cheque.adapters.http.funcionario
 
 import com.example.data_cheque.application.funcionario.*
+import com.example.data_cheque.domain.empregador.Empregador
 import com.example.data_cheque.domain.funcionario.Funcionario
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,6 +20,16 @@ class FuncionarioHandler(
     fun findById(funcionarioId: String): ResponseEntity<Funcionario> {
         val funcionario = funcionarioService.findById(UUID.fromString(funcionarioId))
         return ResponseEntity.ok(funcionario)
+    }
+
+    fun findByContadorId(contadorId: String): ResponseEntity<List<Funcionario>> {
+        val listaDeFuncionario = funcionarioService.findByContadorId(UUID.fromString(contadorId))
+        return ResponseEntity.ok(listaDeFuncionario)
+    }
+
+    fun findByEmpregadorId(empregadorid: String): ResponseEntity<List<Funcionario>> {
+        val listaDeFuncionario = funcionarioService.findByEmpregadorId(UUID.fromString(empregadorid))
+        return ResponseEntity.ok(listaDeFuncionario)
     }
 
     fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): ResponseEntity<Funcionario>{

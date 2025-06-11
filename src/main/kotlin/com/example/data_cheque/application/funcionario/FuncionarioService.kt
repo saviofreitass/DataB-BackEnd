@@ -31,6 +31,14 @@ class FuncionarioService (
         return funcionarioRepository.findByUserId(usuarioId)
     }
 
+    fun findByContadorId(contadorId: UUID): List<Funcionario>? {
+        return funcionarioRepository.findByContadorId(contadorId)
+    }
+
+    fun findByEmpregadorId(empregadorId: UUID): List<Funcionario>?{
+        return funcionarioRepository.findByEmpregadorId(empregadorId)
+    }
+
     fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): Funcionario? {
 
         usuarioService.createValidations(funcionarioCreateCommand.usuario)

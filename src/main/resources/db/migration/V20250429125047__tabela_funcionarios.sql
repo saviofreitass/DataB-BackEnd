@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS data_cheque.funcionarios (
     id UUID PRIMARY KEY,
     usuario_id UUID NOT NULL,
     pessoa_id UUID NOT NULL,
-    empregador_id UUID,
+    empregador_id UUID NOT NULL,
     contador_id UUID NOT NULL,
     cargo VARCHAR(100),
     setor VARCHAR(100),

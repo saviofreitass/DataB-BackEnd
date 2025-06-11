@@ -5,6 +5,7 @@ object FuncionarioSQLExpressions {
     SELECT 
             f.id,
             f.contador_id,
+            f.empregador_id,
             f.usuario_id,
             f.pessoa_id,
             f.cargo,
@@ -31,6 +32,7 @@ object FuncionarioSQLExpressions {
         SELECT 
             f.id,
             f.contador_id,
+            f.empregador_id,
             f.usuario_id,
             f.pessoa_id,
             f.cargo,
@@ -58,6 +60,7 @@ object FuncionarioSQLExpressions {
         SELECT 
             f.id,
             f.contador_id,
+            f.empregador_id,
             f.usuario_id,
             f.pessoa_id,
             f.cargo,
@@ -81,10 +84,67 @@ object FuncionarioSQLExpressions {
         WHERE f.usuario_id = :usuario_id
     """.trimIndent()
 
+    fun sqlSelectByContadorId() = """
+        SELECT 
+            f.id,
+            f.contador_id,
+            f.empregador_id,
+            f.usuario_id,
+            f.pessoa_id,
+            f.cargo,
+            f.setor,
+            f.data_admissao,
+            f.salario,
+            p.nome,
+            p.cpfcnpj,
+            p.telefone,
+            p.ativo,
+            u.email,
+            u.senha_hash,
+            u.criado_em,
+            u.usuario_criacao,
+            u.tipo_usuario,
+            u.atualizado_em,
+            u.usuario_atualizacao
+        FROM funcionarios f
+        JOIN pessoa p ON f.pessoa_id = p.id
+        JOIN usuarios u ON f.usuario_id = u.id
+        WHERE f.contador_id = :contador_id
+    """.trimIndent()
+
+    fun sqlSelectByEmpregadorId() = """
+        SELECT 
+            f.id,
+            f.contador_id,
+            f.empregador_id,
+            f.usuario_id,
+            f.pessoa_id,
+            f.cargo,
+            f.setor,
+            f.data_admissao,
+            f.salario,
+            p.nome,
+            p.cpfcnpj,
+            p.telefone,
+            p.ativo,
+            u.email,
+            u.senha_hash,
+            u.criado_em,
+            u.usuario_criacao,
+            u.tipo_usuario,
+            u.atualizado_em,
+            u.usuario_atualizacao
+        FROM funcionarios f
+        JOIN pessoa p ON f.pessoa_id = p.id
+        JOIN usuarios u ON f.usuario_id = u.id
+        WHERE f.empregador_id = :empregador_id
+    """.trimIndent()
+
     fun sqlInsertFuncionario() = """
         INSERT INTO funcionarios(
             id,
             contador_id,
+            empregador_id,
             usuario_id,
             pessoa_id,
             cargo,
@@ -94,6 +154,7 @@ object FuncionarioSQLExpressions {
         ) VALUES(
             :id,
             :contador_id,
+            :empregador_id,
             :usuario_id,
             :pessoa_id,
             :cargo,
@@ -107,6 +168,7 @@ object FuncionarioSQLExpressions {
         UPDATE funcionarios
             set 
                 contador_id = :contador_id,
+                empregador_id = :empregador_id,
                 usuario_id = :usuario_id,
                 pessoa_id = :pessoa_id,
                 cargo = :cargo,

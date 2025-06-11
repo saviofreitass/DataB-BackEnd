@@ -24,6 +24,16 @@ class FuncionarioController(
         return funcionarioHandler.findById(funcionarioId)
     }
 
+    @GetMapping("/contador/{contadorId:$UUID_REGEX}/funcionarios")
+    fun findByContadorId(@PathVariable contadorId: String): ResponseEntity<List<Funcionario>> {
+        return funcionarioHandler.findByContadorId(contadorId)
+    }
+
+    @GetMapping("/empregador/{empregadorId:$UUID_REGEX}/funcionarios")
+    fun findByEmpregadorId(@PathVariable empregadorId: String): ResponseEntity<List<Funcionario>> {
+        return funcionarioHandler.findByEmpregadorId(empregadorId)
+    }
+
     @PostMapping("/funcionario/cadastro")
     fun insert(@RequestBody funcionarioCreateCommand: FuncionarioCreateCommand): ResponseEntity<Funcionario>{
         return funcionarioHandler.insert(funcionarioCreateCommand)

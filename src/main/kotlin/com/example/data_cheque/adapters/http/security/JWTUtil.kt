@@ -3,7 +3,6 @@ package com.example.data_cheque.adapters.http.security
 import com.example.data_cheque.application.contador.ContadorService
 import com.example.data_cheque.application.funcionario.FuncionarioService
 import com.example.data_cheque.application.usuario.UsuarioService
-import com.example.data_cheque.domain.pessoa.Pessoa
 import com.example.data_cheque.domain.usuario.Role
 import com.example.data_cheque.domain.usuario.Usuario
 import io.jsonwebtoken.JwtException
@@ -38,7 +37,7 @@ class JWTUtil (
         val pessoa = when (usuario.tipoUsuario) {
             Role.ROLE_FUNCIONARIO -> {
                 funcionarioService.findByUserId(usuario.id)?.also { f ->
-                    claims["contador_id"] = f.contador
+                    claims["contador_id"] = f.contadorId
                     claims["id"] = f.id
                 }?.pessoa
             }
