@@ -80,7 +80,7 @@ object UsuarioSQLExpressions {
 
     fun sqlDeleteUsuarioById() = """
         DELETE
-        FROM funcionarios
+        FROM usuarios
         WHERE id = :id
     """.trimIndent()
 }
