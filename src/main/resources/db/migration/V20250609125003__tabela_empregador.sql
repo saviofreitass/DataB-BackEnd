@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS data_cheque.empregador (
     criado_em TIMESTAMP WITH TIME ZONE NOT NULL,
     usuario_criacao VARCHAR(100) NOT NULL,
     atualizado_em TIMESTAMP WITH TIME ZONE,
-    usuario_atualizacao VARCHAR(100)
+    usuario_atualizacao VARCHAR(100),
+    FOREIGN KEY (contador_id) REFERENCES data_cheque.contador(id)
 )
