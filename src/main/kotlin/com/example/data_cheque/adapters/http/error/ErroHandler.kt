@@ -1,6 +1,7 @@
 package com.example.data_cheque.adapters.http.error
 
 import com.example.data_cheque.application.contador.exception.ContadorNaoEncontradoException
+import com.example.data_cheque.application.funcionario.exception.EmpregadorIdInvalido
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoEncontradoException
 import com.example.data_cheque.application.pessoa.exception.PessoaNaoEncontradaException
 import com.example.data_cheque.application.usuario.exception.EmailExistenteException
@@ -42,6 +43,9 @@ private fun Throwable.toResponse(): Pair<HttpStatus, ErrorResponse> =
         is UsuarioNaoEncontradoException -> toResponse(
             id = this.usuarioId,
             statusCode = HttpStatus.NOT_FOUND
+        )
+        is EmpregadorIdInvalido -> toResponse(
+            statusCode = HttpStatus.BAD_REQUEST
         )
         is SenhaInvalida -> toResponse(
             statusCode = HttpStatus.BAD_REQUEST

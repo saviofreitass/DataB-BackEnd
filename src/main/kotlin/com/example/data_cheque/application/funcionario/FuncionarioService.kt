@@ -2,14 +2,13 @@ package com.example.data_cheque.application.funcionario
 
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoCadastrado
 import com.example.data_cheque.application.funcionario.exception.FuncionarioNaoEncontradoException
+import com.example.data_cheque.application.funcionario.strategy.FuncionarioValidationStrategy
+import com.example.data_cheque.application.funcionario.strategy.impl.createFuncionario.empregadroidValidation
 import com.example.data_cheque.application.pessoa.PessoaService
-import com.example.data_cheque.application.pessoa.exception.PessoaNaoEncontradaException
 import com.example.data_cheque.application.usuario.EncoderPassword
 import com.example.data_cheque.application.usuario.UsuarioService
-import com.example.data_cheque.application.usuario.exception.UsuarioNaoEncontradoException
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
-import com.example.data_cheque.domain.pessoa.Pessoa
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -41,6 +40,7 @@ class FuncionarioService (
 
     fun insert(funcionarioCreateCommand: FuncionarioCreateCommand): Funcionario? {
 
+        createValidation(funcionarioCreateCommand)
         usuarioService.createValidations(funcionarioCreateCommand.usuario)
         pessoaService.createValidation(funcionarioCreateCommand.pessoa)
 
@@ -80,5 +80,12 @@ class FuncionarioService (
         funcionarioRepository.delete(funcionarioId)
         usuarioService.delete(usuarioId)
         pessoaService.delete(pessoaId)
+    }
+
+    fun createValidation(funcionarioCreateCommand: FuncionarioCreateCommand) {
+        val validationsStrategies: List<FuncionarioValidationStrategy<FuncionarioCreateCommand>> = listOf(
+            empregadroidValidation()
+        )
+        validationsStrategies.forEach { it.execute(funcionarioCreateCommand) }
     }
 }
