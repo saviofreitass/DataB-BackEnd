@@ -15,4 +15,3 @@ CREATE TABLE IF NOT EXISTS data_cheque.funcionarios (
     FOREIGN KEY (empregador_id) REFERENCES data_cheque.empregador(id),
     FOREIGN KEY (contador_id) REFERENCES data_cheque.contador(id)
 );
-
