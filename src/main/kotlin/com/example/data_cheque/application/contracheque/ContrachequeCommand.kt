@@ -11,6 +11,7 @@ import java.util.*
 @Serializable
 data class ContrachequeCommand(
     @Serializable(with = UUIDSerializer::class) val funcId: UUID,
+    @Serializable(with = UUIDSerializer::class) val empregadorId: UUID,
     @Serializable(with = LocalDateSerializer::class) val dataPagamento: LocalDate,
     @Serializable(with = LocalDateSerializer::class)val dataRefInicio: LocalDate,
     @Serializable(with = LocalDateSerializer::class)val dataRefFim: LocalDate,
@@ -30,6 +31,7 @@ fun ContrachequeCommand.toContracheque(id: UUID = UUID.randomUUID(), contadorId:
       id= id,
       funcId= funcId,
       contadorId = contadorId,
+      empregadorId = empregadorId,
       dataPagamento= dataPagamento,
       dataRefInicio= dataRefInicio,
       dataRefFim= dataRefFim,

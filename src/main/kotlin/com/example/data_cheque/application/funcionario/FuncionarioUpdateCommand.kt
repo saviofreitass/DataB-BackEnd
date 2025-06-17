@@ -13,7 +13,8 @@ import java.util.*
 
 
 data class FuncionarioUpdateCommand(
-    val contador: String?,
+    val contadorId: String?,
+    val empregadorId: String?,
     val usuario: UsuarioUpdateCommand?,
     val pessoa: PessoaUpdateCommand?,
     val cargo: String?,
@@ -30,11 +31,13 @@ fun FuncionarioUpdateCommand.toFuncionarioAtualizado(
     encoderPassword: EncoderPassword
 ): Funcionario {
     return funcionario.copy(
-        contador = UUID.fromString(this.contador) ?: funcionario.contador,
+        pessoa = this.pessoa?.toPessoaAtualizada(funcionario.pessoa) ?: funcionario.pessoa,
+        usuario = this.usuario?.toUsuarioAtualizado(funcionario.usuario, encoderPassword) ?: funcionario.usuario,
+        contadorId = UUID.fromString(this.contadorId) ?: funcionario.contadorId,
+        empregadorId = UUID.fromString(this.empregadorId) ?: funcionario.empregadorId,
         cargo = this.cargo ?: funcionario.cargo,
         setor = this.setor ?: funcionario.setor,
         salario = this.salario ?: funcionario.salario,
-        dataAdmissao = this.dataAdmissao?.toKotlinInstant() ?: funcionario.dataAdmissao,
-        usuario = this.usuario?.toUsuarioAtualizado(funcionario.usuario, encoderPassword) ?: funcionario.usuario
+        dataAdmissao = this.dataAdmissao?.toKotlinInstant() ?: funcionario.dataAdmissao
     )
 }

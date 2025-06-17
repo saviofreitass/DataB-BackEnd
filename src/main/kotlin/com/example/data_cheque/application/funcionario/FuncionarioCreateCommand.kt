@@ -1,6 +1,5 @@
 package com.example.data_cheque.application.funcionario
 
-import InstantSerializer
 import com.example.data_cheque.application.pessoa.PessoaCreateCommand
 import com.example.data_cheque.application.usuario.UsuarioCreateCommand
 import com.example.data_cheque.domain.funcionario.Funcionario
@@ -12,7 +11,8 @@ import java.util.*
 
 @Serializable
 data class FuncionarioCreateCommand(
-    val contador: String,
+    val contadorId: String,
+    val empregadorId: String,
     val usuario: UsuarioCreateCommand,
     val pessoa: PessoaCreateCommand,
     val cargo: String,
@@ -23,7 +23,8 @@ data class FuncionarioCreateCommand(
 
 fun FuncionarioCreateCommand.toFuncionario(pessoa: Pessoa, usuario: Usuario) = Funcionario(
     id = UUID.randomUUID(),
-    contador = UUID.fromString(contador),
+    contadorId = UUID.fromString(contadorId),
+    empregadorId = UUID.fromString(empregadorId),
     usuario = usuario,
     pessoa = pessoa,
     cargo = cargo,

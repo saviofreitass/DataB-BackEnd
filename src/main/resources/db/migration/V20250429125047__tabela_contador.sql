@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS data_cheque;
+
 CREATE TABLE IF NOT EXISTS data_cheque.contador (
     id UUID PRIMARY KEY NOT NULL,
     usuario_id UUID NOT NULL,
@@ -6,3 +8,4 @@ CREATE TABLE IF NOT EXISTS data_cheque.contador (
     FOREIGN KEY (usuario_id) REFERENCES data_cheque.usuarios(id),
     FOREIGN KEY (pessoa_id) REFERENCES data_cheque.pessoa(id)
 )
+

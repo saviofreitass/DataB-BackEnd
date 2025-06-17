@@ -10,6 +10,10 @@ interface FuncionarioRepository {
 
     fun findByUserId(usuarioId: UUID): Funcionario?
 
+    fun findByContadorId(contadorId: UUID): List<Funcionario>?
+
+    fun findByEmpregadorId(empregadorId: UUID): List<Funcionario>?
+
     fun insert(funcionario: Funcionario): Boolean
 
     fun update(funcionario: Funcionario): Boolean

@@ -8,6 +8,7 @@ data class Contracheque (
     val id: UUID,
     val funcId: UUID,
     val contadorId: UUID,
+    val empregadorId: UUID,
     val dataPagamento: LocalDate,
     val dataRefInicio: LocalDate,
     val dataRefFim: LocalDate,

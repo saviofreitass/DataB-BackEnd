@@ -4,10 +4,11 @@ import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressio
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlInsertFuncionario
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlUpdateFuncionario
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectAll
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectByContadorId
+import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectByEmpregadorId
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectById
 import com.example.data_cheque.adapters.jdbc.funcionario.FuncionarioSQLExpressions.sqlSelectByUserId
 import com.example.data_cheque.application.contador.ContadorService
-import com.example.data_cheque.domain.contador.Contador
 import com.example.data_cheque.domain.funcionario.Funcionario
 import com.example.data_cheque.domain.funcionario.FuncionarioRepository
 import com.example.data_cheque.domain.pessoa.Pessoa
@@ -15,7 +16,6 @@ import com.example.data_cheque.domain.usuario.Role
 import com.example.data_cheque.domain.usuario.Usuario
 import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toKotlinInstant
-import kotlinx.serialization.Contextual
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations
 import org.springframework.stereotype.Repository
 import mu.KotlinLogging
@@ -61,6 +61,28 @@ class FuncionarioJDBCRepository(
             db.query(sqlSelectByUserId(), params, rowMapper()).firstOrNull()
         }catch (ex: Exception){
             LOGGER.error { "Houve um erro ao consultar o funcionário" }
+            throw ex;
+        }
+        return funcionario
+    }
+
+    override fun findByContadorId(contadorId: UUID): List<Funcionario>? {
+        val funcionario = try {
+            val params = MapSqlParameterSource("contador_id", contadorId)
+            db.query(sqlSelectByContadorId(), params, rowMapper())
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao consultar os funcionários" }
+            throw ex;
+        }
+        return funcionario
+    }
+
+    override fun findByEmpregadorId(empregadorId: UUID): List<Funcionario>? {
+        val funcionario = try {
+            val params = MapSqlParameterSource("empregador_id", empregadorId)
+            db.query(sqlSelectByEmpregadorId(), params, rowMapper())
+        }catch (ex: Exception){
+            LOGGER.error { "Houve um erro ao consultar os funcionários" }
             throw ex;
         }
         return funcionario
@@ -124,7 +146,8 @@ class FuncionarioJDBCRepository(
 
         Funcionario(
             id = funcionarioId,
-            contador = UUID.fromString(rs.getString("contador_id")),
+            contadorId = UUID.fromString(rs.getString("contador_id")),
+            empregadorId = UUID.fromString(rs.getString("empregador_id")),
             usuario = usuario,
             pessoa = pessoa,
             cargo = rs.getString("cargo"),
@@ -137,7 +160,8 @@ class FuncionarioJDBCRepository(
     private fun parametros(funcionario: Funcionario): MapSqlParameterSource {
         val params = MapSqlParameterSource()
         params.addValue("id", funcionario.id)
-        params.addValue("contador_id", funcionario.contador)
+        params.addValue("contador_id", funcionario.contadorId)
+        params.addValue("empregador_id", funcionario.empregadorId)
         params.addValue("usuario_id", funcionario.usuario.id)
         params.addValue("pessoa_id", funcionario.pessoa.id)
         params.addValue("cargo", funcionario.cargo)
