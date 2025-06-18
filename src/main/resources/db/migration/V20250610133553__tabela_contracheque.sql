@@ -22,5 +22,6 @@ CREATE TABLE IF NOT EXISTS contracheque
                                           usuario_atualizacao     VARCHAR(100),
     FOREIGN KEY (funcionario_id) REFERENCES data_cheque.funcionarios(id),
     FOREIGN KEY (contador_id) REFERENCES data_cheque.contador(id),
-    FOREIGN KEY (empregador_id) REFERENCES data_cheque.empregador(id)
+    FOREIGN KEY (empregador_id) REFERENCES data_cheque.empregador(id),
+    CONSTRAINT unique_funcionario_periodo UNIQUE (funcionario_id, data_ref_inicio, data_ref_fim)
     )

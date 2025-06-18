@@ -2,6 +2,7 @@ package com.example.data_cheque.application.contracheque
 
 import com.example.data_cheque.domain.contracheque.ContraChequeRepository
 import com.example.data_cheque.domain.contracheque.Contracheque
+import com.example.data_cheque.domain.contracheque.exception.ContrachequeNaoEncontradoException
 import kotlinx.datetime.Clock
 import org.springframework.stereotype.Service
 import java.util.*
@@ -25,21 +26,23 @@ class ContrachequeService(
     fun findByIdFuncionario(
         contrachequeId: UUID,
         funcionarioId: UUID
-    ): Contracheque?{
+    ): Contracheque{
         return contrachequeRepository.findByIdFuncionario(contrachequeId, funcionarioId)
+            ?: throw ContrachequeNaoEncontradoException(contrachequeId)
     }
 
     fun findByIdContador(
         contrachequeId: UUID,
         contadorId: UUID
-    ): Contracheque?{
+    ): Contracheque{
         return contrachequeRepository.findByIdContador(contrachequeId, contadorId)
+            ?: throw ContrachequeNaoEncontradoException(contrachequeId)
     }
 
     fun inserir(
         contracheque: ContrachequeCommand,
         contadorId: UUID)
-    : Contracheque?{
+    : Contracheque{
         val contrachequeDomain = contracheque.toContracheque(contadorId = contadorId)
         contrachequeRepository.inserir(contracheque = contrachequeDomain)
         return findByIdContador(contrachequeDomain.id , contadorId)
@@ -49,7 +52,7 @@ class ContrachequeService(
         contracheque: ContrachequeCommand,
         contrachequeId: UUID,
         contadorId: UUID
-    ): Contracheque?{
+    ): Contracheque{
         contrachequeRepository.findByIdContador(contrachequeId, contadorId)
 
         contrachequeRepository.atualizar(
