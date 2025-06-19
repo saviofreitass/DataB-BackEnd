@@ -10,3 +10,5 @@ data class ContrachequeNaoEncontradoException(
     override val contrachequeId: UUID?,
 ) : ContrachequeException("Contracheque $contrachequeId não encontrado")
 
+class ValidacaoException(message: String) : RuntimeException(message)
+

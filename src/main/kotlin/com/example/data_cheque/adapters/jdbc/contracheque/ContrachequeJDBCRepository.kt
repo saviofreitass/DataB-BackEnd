@@ -100,8 +100,13 @@ class ContrachequeJDBCRepository(
             val linhasAfetadas = db.update(sqlInsertContracheque(), params)
             return linhasAfetadas > 0
         } catch (ex: Exception) {
-            LOGGER.error{"Houve um erro ao cadastrar o contracheque: ${ex.message}"}
-            throw ex
+            if(ex.message?.contains("unique_funcionario_periodo") == true){
+                LOGGER.error("Já existe um contracheque cadastrado nesse periodo para esse funcionario")
+                throw ex
+            }else {
+                LOGGER.error { "Houve um erro ao cadastrar o contracheque: ${ex.message}" }
+                throw ex
+            }
         }
     }
 
