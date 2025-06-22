@@ -6,7 +6,7 @@ import com.example.data_cheque.application.usuario.strategy.AccountValidationEst
 
 class PasswordUpdateValidationImpl: AccountValidationEstrategy<UsuarioUpdateCommand> {
     override fun execute(command: UsuarioUpdateCommand) {
-        val senhaRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$\n")
+        val senhaRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[.@\$!%*?&])[A-Za-z\\d.@\$!%*?&]{8,}$")
 
         command.senha?.let {
             if (!senhaRegex.matches(it)) {
