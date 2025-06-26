@@ -8,6 +8,7 @@ import com.example.data_cheque.application.usuario.exception.EmailExistenteExcep
 import com.example.data_cheque.application.usuario.exception.EmailInvalidoException
 import com.example.data_cheque.application.usuario.exception.SenhaInvalida
 import com.example.data_cheque.application.usuario.exception.UsuarioNaoEncontradoException
+import com.example.data_cheque.domain.contracheque.exception.ContrachequeJaExistenteException
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -55,6 +56,9 @@ private fun Throwable.toResponse(): Pair<HttpStatus, ErrorResponse> =
         )
         is EmailExistenteException -> toResponse(
             statusCode = HttpStatus.BAD_REQUEST
+        )
+        is ContrachequeJaExistenteException -> toResponse(
+            statusCode = HttpStatus.CONFLICT // ou BAD_REQUEST
         )
         else ->  {
             toResponse(

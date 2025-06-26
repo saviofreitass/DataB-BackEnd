@@ -60,7 +60,7 @@ object EmpregadorSqlExpressions {
         """
             UPDATE data_cheque.empregador
             SET cnpj = :cnpj,
-                razao_social = :razao_socia,
+                razao_social = :razao_social,
                 nome_fantasia = :nome_fantasia,
                 endereco = :endereco,
                 atualizado_em = :atualizado_em,

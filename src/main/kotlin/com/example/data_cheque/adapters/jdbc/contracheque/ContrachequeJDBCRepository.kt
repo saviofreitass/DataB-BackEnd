@@ -11,6 +11,7 @@ import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpress
 import com.example.data_cheque.adapters.jdbc.contracheque.ContrachequeSqlExpressions.sqlUpdateContracheque
 import com.example.data_cheque.domain.contracheque.ContraChequeRepository
 import com.example.data_cheque.domain.contracheque.Contracheque
+import com.example.data_cheque.domain.contracheque.exception.ContrachequeJaExistenteException
 import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toKotlinInstant
 import mu.KotlinLogging
@@ -102,7 +103,7 @@ class ContrachequeJDBCRepository(
         } catch (ex: Exception) {
             if(ex.message?.contains("unique_funcionario_periodo") == true){
                 LOGGER.error("Já existe um contracheque cadastrado nesse periodo para esse funcionario")
-                throw ex
+                throw ContrachequeJaExistenteException()
             }else {
                 LOGGER.error { "Houve um erro ao cadastrar o contracheque: ${ex.message}" }
                 throw ex
