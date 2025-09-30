@@ -80,9 +80,10 @@ A aplicação fornece uma **API RESTful** no qual atende um CRUD de contadores, 
 ##### Acessando as Rotas da API
 
 1. **Link para o Postman**: 
-   Para visualizar e testar as rotas da API, você pode acessar a documentação no Postman através do link abaixo:  
+   Para visualizar e testar as rotas da API, você pode acessar a documentação no Postman através do link abaixo:
+   [Link Postman](https://app.getpostman.com/join-team?invite_code=18536bb83fb9332a16f5fe3b7b226799cd859d9ebe9ade13cd1f11973652b5b6&target_code=efc0f6ae13b55d1781eae0d7acd13356)
 
-2. Autenticação
+3. Autenticação
 
   - A API utiliza **Spring Security** para autenticação. Para testar os endpoints protegidos, você precisará incluir um token JWT (ou outro método de autenticação) nas requisições.
 
